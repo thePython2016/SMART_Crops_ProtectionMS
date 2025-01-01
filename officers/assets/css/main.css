@@ -1,0 +1,406 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+.logo-text h3{
+    font-family: 'Courier New', Courier, monospace !important;
+    color:white !important;
+    font-size:30px !important;
+   margin:0 auto;
+   font-weight: bold;
+ top:10px !important;
+ margin-top:20px;
+ margin-bottom: 20px;
+ bottom:10px !important;
+
+ 
+}
+body{
+    /* font-family: 'Courier New', Courier, monospace !important; */
+    font-family: "Roboto", sans-serif;
+    /* font-weight: 100; */
+  
+    
+
+}
+div .table th{
+    font-size: 12px !important;
+}
+
+div .table td{
+    font-size:12px !important;
+    text-align:left !important;
+}
+/* Menu */
+div  .menu-vertical, .left-menu{
+    background:#f1ba21f1 !important;
+  
+}
+.menu-vertical ul li a{
+    color:white !important;
+    font-size:14px !important;
+ font-family: "Roboto", sans-serif !important;
+ padding-top:22px !important;
+}
+.menu-vertical ul li a .fa-icon{
+ padding-right:10px !important;
+}
+.menu-vertical .menu-inner .menu-sub  .submenu-icon{
+   
+ 
+ 
+ padding-right:10px !important;
+
+}
+
+
+.menu-inner .menu-sub li a{
+  
+    list-style-type:square !important;
+    padding-top:10px !important;
+    
+   }
+.menu-inner .menu-sub li a:hover{
+  
+    list-style-type:disc !important;
+    background-color: #375E97; 
+}   
+/* Top bar */
+div .topbar{
+    background-color: #375E97 !important;
+}
+div .avatarIcon{
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(185deg) brightness(105%) contrast(103%) !important;
+    color:white !important;
+    width:20px !important;
+    height:20px !important
+}
+div .avatarIcon1{
+    filter: invert(0%) sepia(6%) saturate(7500%) hue-rotate(328deg) brightness(94%) contrast(106%);
+    color:white !important;
+    width:20px !important;
+    height:20px !important
+}
+div .avatarBlock{
+    display:flex;
+    flex-direction: row;
+    margin-right:40px;
+}
+div .avatarBlock p{
+   color:white;
+   font-size:12px;
+   padding-top:5px;
+}
+/* Card */
+div .topCard{
+    width:240px !important;
+    height:140px !important;
+    
+}
+div .farmers{
+    width:100px !important;
+    height:50px !important;
+    filter: invert(55%) sepia(94%) saturate(461%) hue-rotate(358deg) brightness(102%) contrast(107%);
+    display:flex;
+    flex-direction: column;
+}
+div .officers{
+    width:100px !important;
+    height:50px !important;
+    filter: invert(33%) sepia(88%) saturate(440%) hue-rotate(176deg) brightness(83%) contrast(83%);
+    display:flex;
+    flex-direction: column;
+}
+div .input{
+    width:100px !important;
+    height:50px !important;
+    filter: invert(45%) sepia(84%) saturate(482%) hue-rotate(323deg) brightness(98%) contrast(102%);
+ 
+    display:flex;
+    flex-direction: column;
+}
+div .weather{
+    width:100px !important;
+    height:50px !important;
+    filter: invert(75%) sepia(7%) saturate(1114%) hue-rotate(162deg) brightness(88%) contrast(96%);
+    display:flex;
+    flex-direction: column;
+}
+/* Data table */
+.dt-search #dt-search-0{
+    width: 110px !important;
+    /* margin-left:20px !important; */
+  
+  
+  }
+  .dt-search #dt-search-1{
+    width: 110px !important;
+  
+    /* margin-left:20px !important; */
+  
+  
+  }
+  .dataTables_paginate .paginate_button
+  {
+    margin:0 !important;
+    padding:0 !important;
+    margin-right:0 !important;
+  }
+  /* Pagination */
+     /* Buttons */
+.dt-paging button{
+    padding : 1px !important;
+    margin-left: 0px !important;
+    display: inline !important;
+    border: 0px !important;
+    background-color: #f1ba21f1 !important;
+    color:white !important;
+    border-color:#f1ba21f1;
+
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    border: 0px !important;
+}
+
+
+  /* TABS */
+
+  .navbar-nav {
+list-style: none !important;
+}
+.nav-tabs {
+list-style-type: none !important;
+padding-left: 0; /* Optional: Removes any padding if applied */
+border-bottom: 1px solid #dee2e6; 
+}
+
+
+.nav-tabs .nav-link {
+border: 1px solid transparent; 
+border-radius: 0; 
+
+}
+/* .nav-tabs .nav-item  {
+    border-left: 1px solid;
+    } */
+.nav-tabs .nav-item  .active {
+border: 1px solid;
+}
+.nav-tabs .nav-link.active {
+border-color: #007bff; /* Active tab border color */
+border-bottom-color: transparent; /* Prevent border on bottom */
+}
+
+.nav-tabs .nav-link:not(.active):hover {
+border-color: #dee2e6; /* Border on hover for inactive tabs */
+}
+
+/* Form fields */
+/* Farmers */
+div .form-label{
+    text-transform: capitalize;
+}
+
+.first-row-form{
+    display:flex !important;
+    flex-direction: row !important;
+}
+.top-first-row{
+    display:flex !important;
+    flex-direction: row !important;
+}
+.second-row-form{
+    display:flex !important;
+    flex-direction: row !important;
+}
+.second-row-formFields{
+    display:flex !important;
+    flex-direction: row !important;
+}
+.third-row-form{
+    display:flex !important;
+    flex-direction: row !important;
+}
+div #Inputmobile{
+    width:300px !important;
+}
+div #InputLastname{
+    width:300px !important;
+   margin-left:10px !important;
+}
+div #InputFirstname{
+    width:300px !important;
+
+}
+div #InputAddress{
+    width:300px !important;
+
+}
+div #mobile-number{
+    width:300px !important;
+    margin-right:10px !important;
+
+}
+div #InputGender{
+    width:300px !important;
+   margin-left:10px !important;
+}
+
+
+div #Inputday{
+    width:300px !important;
+    margin-right:10px !important;
+
+ 
+}
+div #gender{
+    width:300px !important;
+  
+   
+ 
+}
+div #Inputmonth{
+    width:300px !important;
+    margin-right:10px !important;
+
+ 
+}
+div  #Inputyear{
+    width:300px !important;
+}
+div #Inputaddress{
+    width:300px !important;
+   margin-left:10px !important;
+}
+div .radio{
+    display:flex;
+    flex-direction: ;
+}
+div #Inputaddress{
+   /* margin-left:40px !important; */
+}
+
+
+div .uploadBtn{
+    width:100px !important;
+    background:#375E97 !important;
+    color:white;
+    /* margin:0 auto !important; */
+    margin-top: 20px !important;
+    margin-left:100px;
+    
+}
+
+div .smsBtn{
+    width:100px !important;
+    background:#375E97 !important;
+    color:white;
+    /* margin:0 auto !important; */
+    margin-bottom:10px;
+
+}
+div .uploadBtn:hover{
+    width:100px !important;
+    background:#375E97;
+    color:white;
+}
+
+div #recipient{
+    width:300px  !important;
+}
+/* UPDATE/DELETE BUTTON */
+
+
+
+/* Btns */
+.update-deleteBtn{
+    /* margin-top:30px !important;
+    margin-left:800px !important;
+    margin-bottom:20px !important; */
+    margin: 30px 0 20px 600px !important;
+}
+div .addBtn{
+    background-color: #f1ba21f1 !important;
+    box-shadow: #f1ba21f1;
+    border-color: #f1ba21f1;
+    float:right !important;
+    color:white !important;
+
+}
+div .addBtn a{
+    
+    color:white !important;
+
+}
+div .addBtn :hover{
+    background-color: #f1ba21f1 !important;
+    box-shadow: #f1ba21f1;
+    border-color: #f1ba21f1;
+    float:right !important;
+    color:white !important;
+
+}
+div .submitBtn{
+    width:150px !important;
+    background:#375E97 !important;
+    color:white !important;
+}
+div .submitBtn :hover{
+    width:150px !important;
+    background:#375E97 !important;
+    color:white !important;
+}
+
+.backBtn{
+    background: #f1ba21f1  !important;
+    color:white !important;
+    float:left !important;
+    color:white !important;
+}
+.backBtn a{
+    background: #f1ba21f1  !important;
+    color:white !important;
+    float:left !important;
+    color:white !important;
+}
+.backBtn :hover{
+    background: #f1ba21f1  !important;
+    color:white !important;
+
+}
+/* Update form block */
+.block1, .block2, .block3, .block4{
+    display:flex !important;
+    flex-direction: row;
+}
+#fname, #mname, #lname, #gend, #day, #month, #year, #region,#name,#category,#usage{
+    margin-right:10px !important;
+    width:200px !important;
+}
+
+
+/* TableData records/view */
+tr {
+            cursor: pointer !important;
+        }
+   .selected {
+            background-color: #1b1c1d !important; /* Highlight selected row */
+        }
+   
+        .dataRow:hover {
+            background-color:rgb(202, 209, 224) !important; /* Change color on hover */
+            color:white !important;
+        }
+      /* .tableData:hover {
+           
+            color:white !important;
+        } */
+        /* tr:focus {
+            background-color:#375E97 !important; /* Change color on hover */
+        /* } */ */
+         #delete-button, #updateButton {
+            display: none !important; /* Hide buttons initially */
+        
+        } 
+        /* /* remove table buttons */
+    .dt-layout-cell, .dt-paging{
+        display:none !important;
+    }
