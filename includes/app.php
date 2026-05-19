@@ -3,6 +3,13 @@
 /**
  * Application base path helpers (supports /crops2 and /crops2/api entry points).
  */
+function app_is_user_root_deploy(): bool
+{
+    return basename(dirname(__DIR__)) === 'user'
+        && is_file(dirname(__DIR__) . '/user.php')
+        && is_file(dirname(__DIR__) . '/connection.php');
+}
+
 function app_base_path(): string
 {
     $script = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '/index.php');
@@ -40,6 +47,15 @@ function app_redirect(string $path): void
 /** Public asset path (css, img, fonts, etc.) always relative to project root. */
 function app_asset(string $path): string
 {
+    $path = ltrim(str_replace('\\', '/', $path), '/');
+
+    if (app_is_user_root_deploy()) {
+        $parent = dirname(__DIR__);
+        if (is_file($parent . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $path)) {
+            return app_url('../' . $path);
+        }
+    }
+
     return app_url($path);
 }
 

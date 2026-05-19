@@ -27,6 +27,15 @@ function app_handle_login($conn): bool
     $_SESSION['username'] = $username;
     $level = (int) $row['level'];
 
+    if (app_is_user_root_deploy()) {
+        if ($level === 1) {
+            app_redirect('user.php');
+        } else {
+            app_redirect('index.php');
+        }
+        return true;
+    }
+
     if ($level === 1) {
         app_redirect('user/user.php');
     }

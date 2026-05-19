@@ -4,6 +4,24 @@
  * PostgreSQL database layer for the crops application.
  */
 
+function db_env(string $key): ?string
+{
+    $value = getenv($key);
+    if (is_string($value) && $value !== '') {
+        return $value;
+    }
+
+    if (isset($_ENV[$key]) && is_string($_ENV[$key]) && $_ENV[$key] !== '') {
+        return $_ENV[$key];
+    }
+
+    if (isset($_SERVER[$key]) && is_string($_SERVER[$key]) && $_SERVER[$key] !== '') {
+        return $_SERVER[$key];
+    }
+
+    return null;
+}
+
 function db_connection_string_from_url(string $url): string
 {
     $parsed = parse_url($url);
@@ -48,21 +66,36 @@ function db_connection_string_from_url(string $url): string
     return $joined;
 }
 
-function db_build_connection_string(): string
+function db_connect()
 {
-    foreach (['DATABASE_URL', 'POSTGRES_URL', 'POSTGRES_PRISMA_URL'] as $envKey) {
-        $databaseUrl = getenv($envKey);
-        if (is_string($databaseUrl) && $databaseUrl !== '') {
-            return db_connection_string_from_url($databaseUrl);
+    foreach (['DATABASE_URL', 'POSTGRES_URL', 'POSTGRES_PRISMA_URL', 'POSTGRES_URL_NON_POOLING'] as $envKey) {
+        $databaseUrl = db_env($envKey);
+        if ($databaseUrl === null) {
+            continue;
+        }
+
+        $conn = @pg_connect($databaseUrl);
+        if ($conn !== false) {
+            return $conn;
+        }
+
+        $conn = @pg_connect(db_connection_string_from_url($databaseUrl));
+        if ($conn !== false) {
+            return $conn;
         }
     }
 
-    $host = getenv('DB_HOST') ?: 'localhost';
-    $port = getenv('DB_PORT') ?: '5432';
-    $name = getenv('DB_NAME') ?: 'crops';
-    $user = getenv('DB_USER') ?: 'postgres';
-    $pass = getenv('DB_PASS') ?: getenv('DB_PASSWORD') ?: 'passcode2000';
-    $sslmode = getenv('DB_SSLMODE') ?: '';
+    return @pg_connect(db_build_connection_string());
+}
+
+function db_build_connection_string(): string
+{
+    $host = db_env('DB_HOST') ?? 'localhost';
+    $port = db_env('DB_PORT') ?? '5432';
+    $name = db_env('DB_NAME') ?? 'crops';
+    $user = db_env('DB_USER') ?? 'postgres';
+    $pass = db_env('DB_PASS') ?? db_env('DB_PASSWORD') ?? 'passcode2000';
+    $sslmode = db_env('DB_SSLMODE') ?? '';
 
     $parts = [
         'host=' . $host,
@@ -83,9 +116,16 @@ function db_build_connection_string(): string
 
 function db_connect_error_message(): string
 {
-    return 'Could not connect to PostgreSQL. '
-        . 'Set DATABASE_URL (recommended on Vercel) or DB_HOST, DB_PORT, DB_NAME, DB_USER, and DB_PASS. '
-        . 'localhost only works on your machine, not on Vercel serverless.';
+    $hasUrl = db_env('DATABASE_URL') !== null || db_env('POSTGRES_URL') !== null;
+    $hasParts = db_env('DB_HOST') !== null;
+
+    if (!$hasUrl && !$hasParts) {
+        return 'Database is not configured. In Vercel → Settings → Environment Variables, add DATABASE_URL '
+            . '(from Neon, Supabase, or Vercel Postgres) for Production, then redeploy.';
+    }
+
+    return 'Could not connect to PostgreSQL. Check DATABASE_URL or DB_HOST, DB_PORT, DB_NAME, DB_USER, and DB_PASS. '
+        . 'Use a cloud host with sslmode=require (localhost does not work on Vercel).';
 }
 
 function db_last_error_message($conn = null): string
@@ -102,13 +142,9 @@ function db_last_error_message($conn = null): string
     return '';
 }
 
-$conn = @pg_connect(db_build_connection_string());
+$conn = db_connect();
 
 if ($conn === false) {
-    if (PHP_SAPI !== 'cli') {
-        http_response_code(503);
-    }
-
     die(db_connect_error_message());
 }
 

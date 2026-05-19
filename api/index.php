@@ -1,5 +1,9 @@
 ﻿<?php
 
+declare(strict_types=1);
+
+ob_start();
+
 /**
  * Vercel entry point (see vercel.json). Also works on XAMPP at /crops2/api/index.php.
  */
