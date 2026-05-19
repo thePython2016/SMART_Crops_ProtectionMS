@@ -6,6 +6,7 @@
   },
   "routes": [
     { "handle": "filesystem" },
+    { "src": "/api/includes/(.*)", "status": 404 },  <-- Blocks direct access to includes
     { "src": "/user/(.*)", "dest": "/api/user/$1" },
     { "src": "/farmer/(.*)", "dest": "/api/farmer/$1" },
     { "src": "/officers/(.*)", "dest": "/api/officers/$1" },
