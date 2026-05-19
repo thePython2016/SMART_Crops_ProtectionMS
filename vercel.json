@@ -8,10 +8,12 @@
     }
   },
   "routes": [
-    { "handle": "filesystem" },
+    { "src": "/", "dest": "/api/index.php" },
+    { "src": "/index.php", "dest": "/api/index.php" },
     { "src": "/user/(.*)", "dest": "/api/handler.php" },
     { "src": "/farmer/(.*)", "dest": "/api/handler.php" },
     { "src": "/officers/(.*)", "dest": "/api/handler.php" },
+    { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/api/index.php" }
   ]
 }
