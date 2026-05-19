@@ -4,25 +4,112 @@
  * PostgreSQL database layer for the crops application.
  */
 
-$db_host = getenv('DB_HOST') ?: 'localhost';
-$db_port = getenv('DB_PORT') ?: '5432';
-$db_name = getenv('DB_NAME') ?: 'crops';
-$db_user = getenv('DB_USER') ?: 'postgres';
-$db_pass = getenv('DB_PASS') ?: 'passcode2000';
+function db_connection_string_from_url(string $url): string
+{
+    $parsed = parse_url($url);
+    if ($parsed === false || empty($parsed['host'])) {
+        return $url;
+    }
 
-$conn_string = sprintf(
-    'host=%s port=%s dbname=%s user=%s password=%s',
-    $db_host,
-    $db_port,
-    $db_name,
-    $db_user,
-    $db_pass
-);
+    $parts = [
+        'host=' . $parsed['host'],
+    ];
 
-$conn = @pg_connect($conn_string);
+    if (!empty($parsed['port'])) {
+        $parts[] = 'port=' . $parsed['port'];
+    }
+
+    $path = $parsed['path'] ?? '';
+    if ($path !== '' && $path !== '/') {
+        $parts[] = 'dbname=' . ltrim($path, '/');
+    }
+
+    if (!empty($parsed['user'])) {
+        $parts[] = 'user=' . rawurldecode($parsed['user']);
+    }
+
+    if (isset($parsed['pass'])) {
+        $parts[] = 'password=' . rawurldecode((string) $parsed['pass']);
+    }
+
+    if (!empty($parsed['query'])) {
+        parse_str($parsed['query'], $queryParams);
+        if (!empty($queryParams['sslmode'])) {
+            $parts[] = 'sslmode=' . $queryParams['sslmode'];
+        }
+    }
+
+    $joined = implode(' ', $parts);
+    if (!str_contains($joined, 'sslmode=')) {
+        $parts[] = 'sslmode=require';
+        $joined = implode(' ', $parts);
+    }
+
+    return $joined;
+}
+
+function db_build_connection_string(): string
+{
+    foreach (['DATABASE_URL', 'POSTGRES_URL', 'POSTGRES_PRISMA_URL'] as $envKey) {
+        $databaseUrl = getenv($envKey);
+        if (is_string($databaseUrl) && $databaseUrl !== '') {
+            return db_connection_string_from_url($databaseUrl);
+        }
+    }
+
+    $host = getenv('DB_HOST') ?: 'localhost';
+    $port = getenv('DB_PORT') ?: '5432';
+    $name = getenv('DB_NAME') ?: 'crops';
+    $user = getenv('DB_USER') ?: 'postgres';
+    $pass = getenv('DB_PASS') ?: getenv('DB_PASSWORD') ?: 'passcode2000';
+    $sslmode = getenv('DB_SSLMODE') ?: '';
+
+    $parts = [
+        'host=' . $host,
+        'port=' . $port,
+        'dbname=' . $name,
+        'user=' . $user,
+        'password=' . $pass,
+    ];
+
+    if ($sslmode !== '') {
+        $parts[] = 'sslmode=' . $sslmode;
+    } elseif (!in_array($host, ['localhost', '127.0.0.1'], true)) {
+        $parts[] = 'sslmode=require';
+    }
+
+    return implode(' ', $parts);
+}
+
+function db_connect_error_message(): string
+{
+    return 'Could not connect to PostgreSQL. '
+        . 'Set DATABASE_URL (recommended on Vercel) or DB_HOST, DB_PORT, DB_NAME, DB_USER, and DB_PASS. '
+        . 'localhost only works on your machine, not on Vercel serverless.';
+}
+
+function db_last_error_message($conn = null): string
+{
+    if (!function_exists('pg_last_error')) {
+        return '';
+    }
+
+    if ($conn !== null && $conn !== false) {
+        $message = pg_last_error($conn);
+        return is_string($message) ? $message : '';
+    }
+
+    return '';
+}
+
+$conn = @pg_connect(db_build_connection_string());
 
 if ($conn === false) {
-    die('Could not connect to PostgreSQL: ' . (function_exists('pg_last_error') ? pg_last_error() : 'connection failed'));
+    if (PHP_SAPI !== 'cli') {
+        http_response_code(503);
+    }
+
+    die(db_connect_error_message());
 }
 
 /**
@@ -142,6 +229,10 @@ class DbResultSet implements Countable, IteratorAggregate
 
 function db_query($conn, $sql)
 {
+    if ($conn === false || $conn === null) {
+        return false;
+    }
+
     $result = @pg_query($conn, db_adapt_sql($sql));
 
     if ($result === false) {
@@ -159,6 +250,10 @@ function db_query($conn, $sql)
 
 function db_escape($conn, $value)
 {
+    if ($conn === false || $conn === null) {
+        return addslashes((string) $value);
+    }
+
     return pg_escape_string($conn, (string) $value);
 }
 
