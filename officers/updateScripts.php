@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require 'connection.php';
 if(isset($_POST['update']))
 {
@@ -11,7 +11,7 @@ if(isset($_POST['update']))
     $month=$_POST['month'];
     $year=$_POST['year'];
     $region=$_POST['region'];
-    $update =mysqli_query($conn,"update farmers 
+    $update =db_query($conn,"update farmers 
     set 
     fname='$fname',
     lname='$mname',
@@ -56,7 +56,7 @@ if(isset($_POST['updateOfficers']))
     $month=$_POST['month'];
     $year=$_POST['year'];
     $address=$_POST['address'];
-    $update =mysqli_query($conn,"update agroofficers 
+    $update =db_query($conn,"update agroofficers 
     set 
     occupation='$occupation',
     fname='$fname',
@@ -97,7 +97,7 @@ if(isset($_POST['updateInputs']))
     $category=$_POST['category'];
     $usage=$_POST['usage'];
    ;
-    $updateInputs =mysqli_query($conn,"update agroinputs 
+    $updateInputs =db_query($conn,"update agroinputs 
     set 
  
     name='$name',

@@ -1,4 +1,4 @@
-
+﻿
 <style>
     /* Style for the notification badge */
     .notification-badge {
@@ -11,12 +11,13 @@
   style="background:#FB6542;" id="notification-badge" title="Sent Messages">
     <?php
 require 'connection.php';
-$countMessage=mysqli_query($conn,"select count(id) as messageCount from sentsms");
+$countMessage=db_query($conn,"select count(id) as messageCount from sentsms");
+$totalSMS = 0;
 foreach($countMessage as $message)
 {
-  $totalSMS=$message['messageCount'];
-  echo $totalSMS;
+  $totalSMS = (int) ($message['messageCount'] ?? 0);
 }
+echo $totalSMS;
     ?>
     <span class="visually-hidden">unread messages</span>
   </span>

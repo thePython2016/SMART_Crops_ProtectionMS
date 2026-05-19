@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 session_start();
 if(!isset($_SESSION['username']))
@@ -212,20 +212,15 @@ if(!isset($_SESSION['username']))
                      <form action="mail.php" method="POST" style="margin-bottom:10px !important;
                      margin-left:50px !important
                      ">
-        
+        <?php require 'alert.php'; ?>
           <div class="mb-3 lname">
-          <?php
-
-require 'alert.php';
-
-         ?>
       <label for="exampleInputPassword1" class="form-label" >Sender name</label>
       <input type="text" class="form-control" name="lname" id="lname" style="width:300px  !important" required placeholder="Sender name">
     </div>
   
     <?php 
                require 'connection.php';
-  $selectEmail=mysqli_query($conn,"select * from farmers");
+  $selectEmail=db_query($conn,"select * from farmers");
                ?>
               <div class="form-group mt-3"  style="width:300px  !important" >
                   <label for="newItemSelect">Select receiver:</label>

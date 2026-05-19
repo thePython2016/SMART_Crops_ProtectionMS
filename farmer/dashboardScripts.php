@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 session_start();
 if(!isset($_SESSION['username']))
@@ -15,36 +15,42 @@ if(!isset($_SESSION['username']))
 
 // Farmers count
 require 'connection.php';
-$countFarmers=mysqli_query($conn,"select count(mobileNumber) as farmersCount from farmers  ");
+
+$farmersCount = 0;
+$inputs = 0;
+$officers = 0;
+$region = [];
+$farmers = [];
+$address = [];
+$officerCount = [];
+
+$countFarmers=db_query($conn,"select count(mobileNumber) as farmersCount from farmers  ");
 
 foreach($countFarmers as $count)
 {
-    $farmersCount=$count['farmersCount'];
- 
+    $farmersCount = (int) ($count['farmersCount'] ?? 0);
 }
 
 
 // Agro in puts
-$countInputs=mysqli_query($conn,"select count(inputsNumber) as inputsCount from agroinputs  ");
+$countInputs=db_query($conn,"select count(inputsNumber) as inputsCount from agroinputs  ");
 
 foreach($countInputs as $count)
 {
-    $inputs=$count['inputsCount'];
-  
+    $inputs = (int) ($count['inputsCount'] ?? 0);
 }
 
 
 // Officers
-$countOfficers=mysqli_query($conn,"select count(mobileNumber)  as officersCount from agroofficers  ");
+$countOfficers=db_query($conn,"select count(mobileNumber)  as officersCount from agroofficers  ");
 
 foreach($countOfficers as $count)
 {
-    $officers=$count['officersCount'];
-   
+    $officers = (int) ($count['officersCount'] ?? 0);
 }
 // Farmers by region
-$selectByregion=mysqli_query($conn,"select region,count(mobileNumber) as farmers from farmers GROUP BY region");
-// $executeQuery=mysqli_query($conn,$selectByregion);
+$selectByregion=db_query($conn,"select region,count(mobileNumber) as farmers from farmers GROUP BY region");
+// $executeQuery=db_query($conn,$selectByregion);
 foreach($selectByregion as $data)
 {
     $region[]=$data['region'];
@@ -52,8 +58,8 @@ foreach($selectByregion as $data)
 }
 
 // Officers by region
-$officersByregion=mysqli_query($conn,"select address,count(mobileNumber) as officers from agroofficers GROUP BY address");
-// $executeQuery=mysqli_query($conn,$selectByregion);
+$officersByregion=db_query($conn,"select address,count(mobileNumber) as officers from agroofficers GROUP BY address");
+// $executeQuery=db_query($conn,$selectByregion);
 foreach($officersByregion as $data2)
 {
     $address[]=$data2['address'];

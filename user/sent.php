@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 session_start();
 if(!isset($_SESSION['username']))
@@ -201,7 +201,7 @@ require "profile.php";
                      <div class="accordion mb-5" style="width:500px !important;margin:0 auto;border-color:#1E2761" >
     <?php
     require "connection.php";
-    $selectMessage=mysqli_query($conn,"select * from message_sent");
+    $selectMessage=db_query($conn,"select * from message_sent");
     foreach($selectMessage as $messages)
     {
         ?>

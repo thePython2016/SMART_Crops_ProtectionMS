@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 session_start();
 if(!isset($_SESSION['username']))
@@ -258,7 +258,7 @@ $(document).ready(function(){
             <?php
             require 'connection.php';
 $selectFarmers="select * from farmers";
-$runSelectstmt=mysqli_query($conn,$selectFarmers);
+$runSelectstmt=db_query($conn,$selectFarmers);
 foreach($runSelectstmt as $farmers)
 {
   ?>
@@ -316,7 +316,7 @@ foreach($runSelectstmt as $farmers)
 
 require 'connection.php';
 $selectInputs="select * from agroinputs";
-$runSelectstmt=mysqli_query($conn,$selectInputs);
+$runSelectstmt=db_query($conn,$selectInputs);
 foreach($runSelectstmt as $farmers)
 {
   ?>
@@ -380,7 +380,7 @@ foreach($runSelectstmt as $farmers)
             <?php
 require 'connection.php';
 $selectFarmers="select * from agroofficers";
-$runSelectstmt=mysqli_query($conn,$selectFarmers);
+$runSelectstmt=db_query($conn,$selectFarmers);
 foreach($runSelectstmt as $farmers)
 {
   ?>

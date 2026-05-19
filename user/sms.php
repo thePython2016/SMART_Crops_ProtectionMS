@@ -1,6 +1,8 @@
-
+﻿
 <?php
 require 'connection.php';
+require_once __DIR__ . '/../includes/flash.php';
+require_once __DIR__ . '/../includes/flash.php';
 function simplePhoneFromat($phones){
     $phone_formated = [];
     foreach($phones as $ph){
@@ -63,10 +65,10 @@ if (curl_errno($ch)) {
     $phone=json_encode($receiver);
     $subject=$_POST['subject'];
     $message=$_POST['message'];
-    $insertSentmessage=mysqli_query($conn,"insert into sentSMS(id,date,sender_name,receiver_name,subject,message)
+    $insertSentmessage=db_query($conn,"insert into sentSMS(id,date,sender_name,receiver_name,subject,message)
             
     values('$id','$date','$sender','$phone','$subject','$message')");
-    $_SESSION['message']="<p style='color:grey;font-size:14px;margin-left:200px;font-weight:bold'>Your Message has been sent</p>";
+    app_flash_success('Your message has been sent successfully.');
     echo "<script>
     window.location.href='bulk-sms.php'
     </script>";

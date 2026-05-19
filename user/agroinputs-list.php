@@ -1,4 +1,4 @@
-
+﻿
 <?php
 
 session_start();
@@ -206,7 +206,7 @@ require 'connection.php';
     
             <?php
 $selectInputs="select * from agroinputs";
-$runSelectstmt=mysqli_query($conn,$selectInputs);
+$runSelectstmt=db_query($conn,$selectInputs);
 foreach($runSelectstmt as $inputs)
 {
 

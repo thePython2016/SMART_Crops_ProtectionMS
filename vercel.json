@@ -1,0 +1,25 @@
+{
+  "functions": {
+    "api/**/*.php": {
+      "runtime": "vercel-php@0.7.3"
+    },
+    "user/**/*.php": {
+      "runtime": "vercel-php@0.7.3"
+    },
+    "farmer/**/*.php": {
+      "runtime": "vercel-php@0.7.3"
+    },
+    "officers/**/*.php": {
+      "runtime": "vercel-php@0.7.3"
+    }
+  },
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/user/(.*)", "dest": "/user/$1" },
+    { "src": "/farmer/(.*)", "dest": "/farmer/$1" },
+    { "src": "/officers/(.*)", "dest": "/officers/$1" },
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/index\\.php", "dest": "/api/index.php" },
+    { "src": "/", "dest": "/api/index.php" }
+  ]
+}

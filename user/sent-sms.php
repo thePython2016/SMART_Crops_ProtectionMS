@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 session_start();
 if(!isset($_SESSION['username']))
@@ -235,7 +235,7 @@ require "profile.php";
                        <div class="accordion mb-5" style="width:500px !important;margin:0 auto;border-color:#1E2761" >
     <?php
     require "connection.php";
-    $selectMessage=mysqli_query($conn,"select * from sentSMS");
+    $selectMessage=db_query($conn,"select * from sentSMS");
     foreach($selectMessage as $messages)
     {
         $receiver=str_replace(['[',']','"'],"",$messages['receiver_name'])

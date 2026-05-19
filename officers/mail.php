@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 use PHPMAILER\PHPMAILER\PHPMAILER;
 use PHPMAILER\PHPMAILER\exception;
@@ -13,7 +13,7 @@ $sql = "select * from farmers where  email='$_POST[email]' OR '$_POST[email]'=''
 
   
 // Query for the making the connection. 
-$res = mysqli_query($conn, $sql); 
+$res = db_query($conn, $sql); 
 if(isset($_POST['send']))
 {
     $mail=new PHPMailer(true);
@@ -27,8 +27,8 @@ if(isset($_POST['send']))
     $mail->setFrom('farmerafrica120@gmail.com');
 
   
-if(mysqli_num_rows($res) > 0) { 
-    while($x = mysqli_fetch_assoc($res)) { 
+if(db_num_rows($res) > 0) { 
+    while($x = db_fetch_assoc($res)) { 
         $mail->addAddress($x['email']); 
  
     } 

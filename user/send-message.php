@@ -8,12 +8,13 @@ require 'phpmailer/src/PHPMailer.php';
 require 'phpmailer/src/SMTP.php';
 
 require 'connection.php';
+require_once __DIR__ . '/../includes/flash.php';
 $sql = "select * from farmers where  email='$_POST[email]' OR '$_POST[email]'=''"; 
 // $sql = "select * from members where   email = CASE WHEN $_POST[email] = 0 THEN email ELSE $_POST[email] END"; 
 
   
 // Query for the making the connection. 
-$res = mysqli_query($conn, $sql); 
+$res = db_query($conn, $sql); 
 if(isset($_POST['send']))
 {
     $mail=new PHPMailer(true);
@@ -27,8 +28,8 @@ if(isset($_POST['send']))
     $mail->setFrom('infonet20th@gmail.com');
 
   
-if(mysqli_num_rows($res) > 0) { 
-    while($x = mysqli_fetch_assoc($res)) { 
+if(db_num_rows($res) > 0) { 
+    while($x = db_fetch_assoc($res)) { 
         $mail->addAddress($x['email']); 
  
     } 
@@ -49,7 +50,7 @@ if(mysqli_num_rows($res) > 0) {
         $receiver=$_POST['email'];
         $subject=$_POST['subject'];
         $message=$_POST['message'];
-        $insertSentmessage=mysqli_query($conn,"insert into message_sent(id,date,sender_name,receiver_name,subject,message)
+        $insertSentmessage=db_query($conn,"insert into message_sent(id,date,sender_name,receiver_name,subject,message)
                 
         values('$id','$date','$sender','$receiver','$subject','$message')");
         $_SESSION['message']="<p style='color:grey;font-size:14px;margin-left:200px;font-weight:bold'>Your Message has been sent</p>";

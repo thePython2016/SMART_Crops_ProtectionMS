@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 session_start();
 if(!isset($_SESSION['username']))
@@ -48,7 +48,7 @@ if(isset($_POST['importFarmers']))
   birthMonth,birthYear,region) values('$phone','$fname','$mname','$lname','$gender','$day'
   ,'$month','$year','$region')";
   
-  $farmersQuery=mysqli_query($conn,$insertFarmers);
+  $farmersQuery=db_query($conn,$insertFarmers);
         $count++;
 
     

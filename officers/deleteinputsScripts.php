@@ -1,9 +1,9 @@
-<?php
+﻿<?php
 
 require "connection.php";
 $id=$_GET['id'];
   
-$delete=mysqli_query($conn,"delete from agroinputs where inputsNumber='$id'");
+$delete=db_query($conn,"delete from agroinputs where inputsNumber='$id'");
 if($delete)
 {
     echo "<script>

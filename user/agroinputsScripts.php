@@ -1,42 +1,23 @@
-<?php
+﻿<?php
+
 require 'connection.php';
-if(isset($_POST["submit"]))
-{
-  
+require_once __DIR__ . '/../includes/flash.php';
 
-// $currentdate=date('Y-m-d');
+if (isset($_POST['submit'])) {
+    $id = db_escape($conn, $_POST['inputid']);
+    $name = db_escape($conn, $_POST['inputname']);
+    $category = db_escape($conn, $_POST['inputcategory']);
+    $usage = db_escape($conn, $_POST['inputusage']);
 
-$id=mysqli_real_escape_string($conn,$_POST['inputid']);
-$name=mysqli_real_escape_string($conn,$_POST['inputname']);
-$category=mysqli_real_escape_string($conn,$_POST['inputcategory']);
-$usage=mysqli_real_escape_string($conn,$_POST['inputusage']);
-
-
-
-// INSERT TO TABLE
-$insertInputs=mysqli_query($conn,"insert into agroinputs(inputsNumber,name,category,usage_)
+    $insertInputs = db_query($conn, "insert into agroinputs(inputsNumber,name,category,usage_)
  values('$id','$name','$category','$usage')");
 
+    if ($insertInputs) {
+        app_flash_success('Agro input added successfully.');
+    } else {
+        app_flash_error('Could not add agro input. Please try again.');
+    }
 
-
-// $count=mysqli_num_rows($farmersQuery);
-
-if($insertInputs)
-{
-  $_SESSION['addedFarmer']="<p style='color:red;font-size:14px;margin-left:200px;font-weight:bold'>One Farmer added</p>";
-  echo "<script>
-  window.location.href='agroinputs.php'
-  </script>";
-  
-
-  
+    echo "<script>window.location.href='agroinputs.php';</script>";
+    exit;
 }
-else{
-
-  $_SESSION['addingFarmerError']="<p style='color:red;font-size:14px;margin-left:200px;font-weight:bold'>Error </p>";
-}
-
-
-
-}
-?>

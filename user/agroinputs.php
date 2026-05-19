@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 session_start();
 if(!isset($_SESSION['username']))
@@ -209,6 +209,7 @@ if(!isset($_SESSION['username']))
          
        <!-- Farmers Form -->
        <form name="" method="POST" action="agroinputsScripts.php">
+      <?php require 'alert.php'; ?>
   <div class="mb-3">
     <label for="exampleInputEmail1" id="Inputmobile"class="form-label" >Input number</label>
     <input type="text" class="form-control" name="inputid" id="Inputmobile" aria-describedby="emailHelp" required placeholder="Input number">
@@ -252,7 +253,7 @@ if(!isset($_SESSION['username']))
 
 require 'connection.php';
 $selectInputs="select * from agroinputs";
-$runSelectstmt=mysqli_query($conn,$selectInputs);
+$runSelectstmt=db_query($conn,$selectInputs);
 foreach($runSelectstmt as $farmers)
 {
   ?>

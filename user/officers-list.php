@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 session_start();
 if(!isset($_SESSION['username']))
@@ -263,7 +263,7 @@ if(!isset($_SESSION['username']))
             <?php
             require 'connection.php';
 $selectOfficers="select * from agroofficers";
-$runSelectstmt=mysqli_query($conn,$selectOfficers);
+$runSelectstmt=db_query($conn,$selectOfficers);
 foreach($runSelectstmt as $officers)
 {
 

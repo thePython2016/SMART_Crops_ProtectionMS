@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 session_start();
 if(!isset($_SESSION['username']))
@@ -213,7 +213,7 @@ require 'profile.php';
           
        <!-- Farmers Form -->
        <form name="" method="POST" action="farmersScripts.php" >
-      
+      <?php require 'alert.php'; ?>
         <div class="first-row-form">
               <div class="mb-3 mobile">
     <label for="exampleInputEmail1" class="form-label" >Mobile number</label>
@@ -309,7 +309,7 @@ require 'profile.php';
             <?php
             require 'connection.php';
 $selectFarmers="select * from farmers";
-$runSelectstmt=mysqli_query($conn,$selectFarmers);
+$runSelectstmt=db_query($conn,$selectFarmers);
 foreach($runSelectstmt as $farmers)
 {
   $id=$farmers['mobileNumber'];

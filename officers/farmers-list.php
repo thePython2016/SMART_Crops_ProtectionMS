@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 session_start();
 if(!isset($_SESSION['username']))
@@ -207,7 +207,7 @@ require 'profile.php';
      
             <?php
 $selectFarmers="select * from farmers";
-$runSelectstmt=mysqli_query($conn,$selectFarmers);
+$runSelectstmt=db_query($conn,$selectFarmers);
 foreach($runSelectstmt as $farmers)
 {
 

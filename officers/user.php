@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 session_start();
 if(!isset($_SESSION['username']))
@@ -216,7 +216,7 @@ margin-left:1050px !important;
             <?php
             require 'connection.php';
 $selectFarmers="select * from farmers";
-$runSelectstmt=mysqli_query($conn,$selectFarmers);
+$runSelectstmt=db_query($conn,$selectFarmers);
 foreach($runSelectstmt as $farmers)
 {
 
@@ -241,7 +241,7 @@ foreach($runSelectstmt as $farmers)
 ?>
 
 <?php
-$countFarmers=mysqli_query($conn,"select count(mobileNumber) as count from farmers");
+$countFarmers=db_query($conn,"select count(mobileNumber) as count from farmers");
 foreach($countFarmers as $count)
 {
     $farmer=$count['count'];
@@ -332,7 +332,7 @@ $('#farmersTable').dataTable( {
 
 require 'connection.php';
 $selectInputs="select * from agroinputs";
-$runSelectstmt=mysqli_query($conn,$selectInputs);
+$runSelectstmt=db_query($conn,$selectInputs);
 foreach($runSelectstmt as $farmers)
 {
   ?>
@@ -351,7 +351,7 @@ foreach($runSelectstmt as $farmers)
              
             </tbody>
             <?php
-$countinputs=mysqli_query($conn,"select count(inputsNumber) as count from agroinputs");
+$countinputs=db_query($conn,"select count(inputsNumber) as count from agroinputs");
 foreach($countinputs as $countinput)
 {
     $input=$countinput['count'];

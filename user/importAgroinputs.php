@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 session_start();
 if(!isset($_SESSION['username']))
@@ -38,13 +38,13 @@ if(isset($_POST['importInputs']))
 
 
 
-  $insertInputs=mysqli_query($conn,"insert into agroinputs(inputsNumber,name,category,usage_)
+  $insertInputs=db_query($conn,"insert into agroinputs(inputsNumber,name,category,usage_)
   values('$id','$name','$category','$usage')");
   $count++;
  
  
  
- // $count=mysqli_num_rows($farmersQuery);
+ // $count=db_num_rows($farmersQuery);
  
  if($insertInputs)
  {

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require('connection.php');
 // error_reporting(0);
 use SimpleExcel\SimpleExcel;
@@ -29,7 +29,7 @@ if(isset($_POST['importOfficers']))
   birthMonth,birthYear,address) values('$phone','$occupation','$fname','$mname','$lname','$gender','$day'
   ,'$month','$year','$address')";
   
-  $officersQuery=mysqli_query($conn,$insertOfficers);
+  $officersQuery=db_query($conn,$insertOfficers);
         $count++;
 
     

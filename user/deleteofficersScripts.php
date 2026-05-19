@@ -1,9 +1,9 @@
-<?php
+﻿<?php
 
 require "connection.php";
 $id=$_GET['id'];
   
-$delete=mysqli_query($conn,"delete from agroofficers where mobileNumber='$id'");
+$delete=db_query($conn,"delete from agroofficers where mobileNumber='$id'");
 if($delete)
 {
     echo "<script>

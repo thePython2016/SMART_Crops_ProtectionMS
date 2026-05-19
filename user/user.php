@@ -1,4 +1,4 @@
-
+﻿
 <?php require 'dashboardScripts.php' ?>
 <!DOCTYPE html>
 
@@ -364,7 +364,7 @@
             <?php
             
 $selectInputs="select * from agroinputs";
-$runSelectstmt=mysqli_query($conn,$selectInputs);
+$runSelectstmt=db_query($conn,$selectInputs);
 foreach($runSelectstmt as $inputs)
 {
 
@@ -425,7 +425,7 @@ foreach($runSelectstmt as $inputs)
             <?php
             require 'connection.php';
 $selectOfficers="select * from agroofficers";
-$runSelectstmt=mysqli_query($conn,$selectOfficers);
+$runSelectstmt=db_query($conn,$selectOfficers);
 foreach($runSelectstmt as $officers)
 {
 
