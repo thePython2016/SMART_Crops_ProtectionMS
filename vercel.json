@@ -1,16 +1,17 @@
 {
   "functions": {
-    "api/**/*.php": {
-      "runtime": "vercel-php@0.9.0"
+    "api/index.php": {
+      "runtime": "vercel-php@0.7.4"
+    },
+    "api/handler.php": {
+      "runtime": "vercel-php@0.7.4"
     }
   },
   "routes": [
     { "handle": "filesystem" },
-    { "src": "/api/includes/(.*)", "status": 404 },  <-- Blocks direct access to includes
-    { "src": "/user/(.*)", "dest": "/api/user/$1" },
-    { "src": "/farmer/(.*)", "dest": "/api/farmer/$1" },
-    { "src": "/officers/(.*)", "dest": "/api/officers/$1" },
-    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/user/(.*)", "dest": "/api/handler.php" },
+    { "src": "/farmer/(.*)", "dest": "/api/handler.php" },
+    { "src": "/officers/(.*)", "dest": "/api/handler.php" },
     { "src": "/(.*)", "dest": "/api/index.php" }
   ]
 }
