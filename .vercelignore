@@ -1,3 +1,3 @@
 # Root index.php is for XAMPP only. On Vercel, login runs via /api/index.php.
-# Without this, Vercel can serve index.php as a static file (raw <?php ... ?> in the browser).
+# Dashboard .php files run via /api/router.php (see docs/VERCEL_DEPLOY.md).
 /index.php
