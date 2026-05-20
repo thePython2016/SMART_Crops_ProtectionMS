@@ -1,5 +1,6 @@
 <?php
 ob_start();
+ob_clean(); // ← add this line, clears BOM from buffer immediately
 header('Content-Type: application/json');
 ini_set('display_errors', 0);
 require_once __DIR__ . '/../includes/login_auth.php';
