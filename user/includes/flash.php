@@ -2,41 +2,13 @@
 
 declare(strict_types=1);
 
-if (function_exists('app_flash_success')) {
-    return;
-}
+// Thin shim to the canonical flash helpers in the root includes directory.
+$repoFlash = dirname(__DIR__) . '/includes/flash.php';
 
-$repoFlash = dirname(__DIR__, 2) . '/includes/flash.php';
-if (is_file($repoFlash) && realpath($repoFlash) !== realpath(__FILE__)) {
+if (is_file($repoFlash)) {
     require_once $repoFlash;
-    return;
-}
-
-function app_ensure_session(): void
-{
-    if (!function_exists('app_session_start')) {
-        require_once __DIR__ . '/app.php';
-    }
-    app_session_start();
-}
-
-function app_flash_success(string $message): void
-{
-    app_ensure_session();
-    $_SESSION['form_success'] = $message;
-}
-
-function app_flash_error(string $message): void
-{
-    app_ensure_session();
-    $_SESSION['form_error'] = $message;
-}
-
-/**
- * @param array<string, string> $fieldErrors
- */
-function app_flash_field_errors(array $fieldErrors): void
-{
-    app_ensure_session();
-    $_SESSION['form_field_errors'] = $fieldErrors;
+} else {
+    // Fallback for environments with different directory layouts; this will
+    // still fail loudly if the canonical file cannot be found.
+    require_once dirname(__DIR__, 2) . '/includes/flash.php';
 }
