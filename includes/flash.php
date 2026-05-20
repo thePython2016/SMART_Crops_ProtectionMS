@@ -2,9 +2,10 @@
 
 function app_ensure_session(): void
 {
-    if (session_status() !== PHP_SESSION_ACTIVE) {
-        session_start();
+    if (!function_exists('app_session_start')) {
+        require_once __DIR__ . '/app.php';
     }
+    app_session_start();
 }
 
 function app_flash_success(string $message): void

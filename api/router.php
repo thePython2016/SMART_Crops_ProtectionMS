@@ -5,6 +5,9 @@
  */
 declare(strict_types=1);
 
+require_once __DIR__ . '/../includes/app.php';
+app_session_start();
+
 $file = isset($_GET['file']) ? (string) $_GET['file'] : '';
 $file = str_replace('\\', '/', $file);
 $file = ltrim($file, '/');

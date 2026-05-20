@@ -1,14 +1,6 @@
-<?php
+﻿<?php
 
-$appBootstrap = __DIR__ . '/../includes/app.php';
-if (!is_file($appBootstrap)) {
-    $appBootstrap = __DIR__ . '/../user/includes/app.php';
-}
-require_once $appBootstrap;
-app_session_start();
-if (!isset($_SESSION['username'])) {
-    app_redirect_login();
-}
+require_once __DIR__ . '/auth_guard.php';
 
 // Farmers count
 require 'connection.php';

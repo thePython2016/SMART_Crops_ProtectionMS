@@ -32,9 +32,10 @@ function app_handle_login(PDO $db) {
         if ($user && password_verify($password, $user['password_hash'])) {
             
             // Log the user in (Example using native PHP Sessions)
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
+            if (!function_exists('app_session_start')) {
+                require_once __DIR__ . '/../includes/app.php';
             }
+            app_session_start();
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
 

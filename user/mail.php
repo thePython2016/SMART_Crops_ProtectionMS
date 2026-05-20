@@ -1,6 +1,5 @@
-﻿<?php
-session_start();
-
+<?php
+require_once __DIR__ . '/includes/auth_guard.php';
 use PHPMailer\PHPMailer\Exception as MailException;
 use PHPMailer\PHPMailer\PHPMailer;
 

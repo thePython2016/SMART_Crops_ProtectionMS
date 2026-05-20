@@ -1,10 +1,6 @@
-<?php
+﻿<?php
 
-require_once __DIR__ . '/includes/app.php';
-app_session_start();
-if (!isset($_SESSION['username'])) {
-    app_redirect_login();
-}
+require_once __DIR__ . '/includes/auth_guard.php';
 
 // Farmers count
 require 'connection.php';

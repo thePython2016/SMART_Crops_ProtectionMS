@@ -1,15 +1,5 @@
-﻿<?php
-
-session_start();
-if(!isset($_SESSION['username']))
-{
-  echo "
-  <script>
-  window.location.href='../index.php';
-  </script>
-  ";
-}
-
+<?php
+require_once __DIR__ . '/auth_guard.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
