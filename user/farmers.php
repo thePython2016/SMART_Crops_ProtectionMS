@@ -203,6 +203,7 @@ require 'profile.php';
        <form name="" method="POST" action="farmersScripts.php" >
       <?php require 'alert.php'; ?>
 	      <?php render_form_field_flash('phone'); ?>
+		    <?php render_form_field_flash('email'); ?>
         <div class="first-row-form">
               <div class="mb-3 mobile">
 
@@ -212,7 +213,7 @@ require 'profile.php';
     
   </div>
   <div class="mb-3">
-    <?php render_form_field_flash('email'); ?>
+  
     <label for="exampleInputEmail1" class="form-label" >Email address</label>
     <input type="email" class="form-control" name="email" id="InputAddress" aria-describedby="emailHelp"    placeholder="Email address" required>
     
