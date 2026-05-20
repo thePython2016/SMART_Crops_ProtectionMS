@@ -1,50 +1,29 @@
 <?php
-
-/**
- * Handle login POST. Returns true when a redirect was sent.
- */
-function app_handle_login($conn): bool
+function app_handle_login($pdo): array
 {
-    if (!isset($_POST['login'])) {
-        return false;
+    // Read JSON body
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    $username = trim($data['username'] ?? '');
+    $password = trim($data['password'] ?? '');
+
+    if (!$username || !$password) {
+        return ['success' => false, 'message' => 'Username and password are required.'];
     }
 
-    $username = db_escape($conn, $_POST['username'] ?? '');
-    $pass = db_escape($conn, $_POST['password'] ?? '');
+    // Fetch user by username only, then compare password manually
+    $stmt = $pdo->prepare("SELECT username, password, level FROM user WHERE username = ?");
+    $stmt->execute([$username]);
+    $user = $stmt->fetch();
 
-    $select = "SELECT username, password, level FROM user WHERE username='$username' AND password='$pass'";
-    $answer = db_query($conn, $select);
-    $row = db_fetch_array($answer);
-
-    if (!$row) {
-        return false;
+    if (!$user || $user['password'] !== $password) {
+        return ['success' => false, 'message' => 'Invalid username or password.'];
     }
 
-    if (session_status() !== PHP_SESSION_ACTIVE) {
-        session_start();
-    }
-
-    $_SESSION['username'] = $username;
-    $level = (int) $row['level'];
-
-    if (app_is_user_root_deploy()) {
-        if ($level === 1) {
-            app_redirect('user.php');
-        } else {
-            app_redirect('index.php');
-        }
-        return true;
-    }
-
-    if ($level === 1) {
-        app_redirect('user/user.php');
-    }
-    if ($level === 2) {
-        app_redirect('farmer/user.php');
-    }
-    if ($level === 3) {
-        app_redirect('officers/user.php');
-    }
-
-    return false;
+    return [
+        'success'  => true,
+        'message'  => 'Login successful.',
+        'username' => $user['username'],
+        'level'    => (int) $user['level']
+    ];
 }
