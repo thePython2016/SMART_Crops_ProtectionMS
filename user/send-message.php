@@ -8,7 +8,7 @@ require 'phpmailer/src/PHPMailer.php';
 require 'phpmailer/src/SMTP.php';
 
 require 'connection.php';
-require_once __DIR__ . '/../includes/flash.php';
+require_once __DIR__ . '/includes/flash.php';
 $sql = "select * from farmers where  email='$_POST[email]' OR '$_POST[email]'=''"; 
 // $sql = "select * from members where   email = CASE WHEN $_POST[email] = 0 THEN email ELSE $_POST[email] END"; 
 

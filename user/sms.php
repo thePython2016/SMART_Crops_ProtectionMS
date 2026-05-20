@@ -1,8 +1,7 @@
 ﻿
 <?php
 require 'connection.php';
-require_once __DIR__ . '/../includes/flash.php';
-require_once __DIR__ . '/../includes/flash.php';
+require_once __DIR__ . '/includes/flash.php';
 function simplePhoneFromat($phones){
     $phone_formated = [];
     foreach($phones as $ph){

@@ -2,6 +2,12 @@
 /**
  * Application base path helpers (supports /crops2 and /crops2/api entry points).
  */
+declare(strict_types=1);
+
+if (function_exists('app_discard_output_buffers')) {
+    return;
+}
+
 function app_discard_output_buffers(): void
 {
     while (ob_get_level() > 0) {

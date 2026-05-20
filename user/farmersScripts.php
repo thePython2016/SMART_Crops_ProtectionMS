@@ -1,7 +1,7 @@
 ﻿<?php
 
 require 'connection.php';
-require_once __DIR__ . '/../includes/flash.php';
+require_once __DIR__ . '/includes/flash.php';
 
 if (isset($_POST['submit'])) {
     $phone = db_escape($conn, $_POST['phone']);

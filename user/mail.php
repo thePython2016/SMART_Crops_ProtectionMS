@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/includes/auth_guard.php';
 use PHPMailer\PHPMailer\Exception as MailException;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -7,8 +7,11 @@ require 'phpmailer/src/Exception.php';
 require 'phpmailer/src/PHPMailer.php';
 require 'phpmailer/src/SMTP.php';
 require 'connection.php';
-require_once __DIR__ . '/../includes/flash.php';
-require_once __DIR__ . '/../includes/mail_smtp.php';
+require_once __DIR__ . '/includes/flash.php';
+$mailSmtp = dirname(__DIR__, 2) . '/includes/mail_smtp.php';
+if (is_file($mailSmtp)) {
+    require_once $mailSmtp;
+}
 
 $sql = "select * from farmers where  email='$_POST[email]' OR '$_POST[email]'=''";
 $res = db_query($conn, $sql);
