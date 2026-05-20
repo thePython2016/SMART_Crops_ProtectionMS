@@ -3,8 +3,8 @@ require_once __DIR__ . '/includes/auth_guard.php';
 require('connection.php');
 require_once __DIR__ . '/includes/flash.php';
 require_once dirname(__DIR__) . '/includes/pg_duplicate.php';
-// error_reporting(0);
 use SimpleExcel\SimpleExcel;
+
 if (isset($_POST['importFarmers'])) {
     $uploadedTmp = $_FILES['farmers_file']['tmp_name'] ?? '';
     if ($uploadedTmp === '' || !is_uploaded_file($uploadedTmp)) {
@@ -26,6 +26,8 @@ if (isset($_POST['importFarmers'])) {
         $rows = $excel->parser->getField();
 
         $imported = 0;
+        $duplicates = 0;
+        $failed = 0;
         for ($count = 1; $count < count($rows); $count++) {
             $phone = db_escape($conn, $rows[$count][0] ?? '');
             $fname = db_escape($conn, $rows[$count][1] ?? '');
@@ -51,16 +53,22 @@ if (isset($_POST['importFarmers'])) {
             }
 
             $err = db_last_error_message($conn);
-            app_flash_from_pg_insert_error($err, [
-                'mobilenumber' => 'farmers_file',
-            ], 'Could not import farmers CSV. Please check the file and try again.');
-            app_redirect('farmers.php');
+            if (db_pg_error_is_unique_violation($err)) {
+                $duplicates++;
+                continue;
+            }
+
+            $failed++;
         }
 
-        if ($imported > 0) {
-            app_flash_success('Farmers imported successfully.');
+        if ($imported > 0 && $duplicates === 0 && $failed === 0) {
+            app_flash_success("Farmers imported successfully ({$imported} rows).");
+        } elseif ($imported > 0 && ($duplicates > 0 || $failed > 0)) {
+            app_flash_error("Imported {$imported} rows. Skipped {$duplicates} duplicate row(s) and {$failed} invalid row(s).");
+        } elseif ($duplicates > 0 && $failed === 0) {
+            app_flash_error("No new records imported. {$duplicates} row(s) already exist.");
         } else {
-            app_flash_error('No farmers were imported. Please verify the CSV content.');
+            app_flash_error('No farmers were imported. Please verify the CSV content and format.');
         }
     } catch (Throwable $e) {
         app_flash_error('Could not import farmers CSV. Please ensure the file is a valid CSV.');
