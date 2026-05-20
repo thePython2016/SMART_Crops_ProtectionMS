@@ -1,17 +1,14 @@
-﻿<?php
-
-session_start();
-if(!isset($_SESSION['username']))
-{
-  echo "
-  <script>
-  window.location.href='../index.php';
-  </script>
-  ";
-}
-
-?>
 <?php
+
+$appBootstrap = __DIR__ . '/../includes/app.php';
+if (!is_file($appBootstrap)) {
+    $appBootstrap = __DIR__ . '/../user/includes/app.php';
+}
+require_once $appBootstrap;
+app_session_start();
+if (!isset($_SESSION['username'])) {
+    app_redirect_login();
+}
 
 // Farmers count
 require 'connection.php';
@@ -65,6 +62,3 @@ foreach($officersByregion as $data2)
     $address[]=$data2['address'];
     $officerCount[]=$data2['officers'];
 }
-
-
-?>

@@ -1,15 +1,10 @@
-﻿<?php
+<?php
 
 require_once __DIR__ . '/includes/app.php';
 app_session_start();
 if (!isset($_SESSION['username'])) {
-    app_discard_output_buffers();
-    header('Location: ' . app_login_action(), true, 302);
-    exit;
+    app_redirect_login();
 }
-
-?>
-<?php
 
 // Farmers count
 require 'connection.php';
@@ -63,6 +58,3 @@ foreach($officersByregion as $data2)
     $address[]=$data2['address'];
     $officerCount[]=$data2['officers'];
 }
-
-
-?>

@@ -1,5 +1,3 @@
-
-
 <?php require 'dashboardScripts.php' ?>
 <!DOCTYPE html>
 

@@ -73,6 +73,14 @@ function app_redirect(string $path): void
     exit;
 }
 
+/** Redirect unauthenticated dashboard requests to the login page. */
+function app_redirect_login(): void
+{
+    app_discard_output_buffers();
+    header('Location: ' . app_login_action(), true, 302);
+    exit;
+}
+
 /** Public asset path (css, img, fonts, etc.) always relative to project root. */
 function app_asset(string $path): string
 {
