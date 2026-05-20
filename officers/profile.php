@@ -44,7 +44,7 @@
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                    <a class="btn  d-flex" href="../index.php" >
+                    <a class="btn  d-flex" href="../logout.php" >
                         <i class="bx bx-power-off me-2"></i>
                         <span class="align-middle">Log Out</span>
                       </a>
