@@ -202,9 +202,10 @@ require 'profile.php';
        <!-- Farmers Form -->
        <form name="" method="POST" action="farmersScripts.php" >
       <?php require 'alert.php'; ?>
+	      <?php render_form_field_flash('phone'); ?>
         <div class="first-row-form">
               <div class="mb-3 mobile">
-    <?php render_form_field_flash('phone'); ?>
+
     <label for="exampleInputEmail1" class="form-label" >Mobile number</label>
     <input type="text" id="mobilenumber"  name="phone" class="form-control" maxlength="12" placeholder="0761237891" required>
     
