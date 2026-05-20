@@ -1,7 +1,6 @@
 <?php
 function app_handle_login($pdo): array
 {
-    // Read JSON body
     $data = json_decode(file_get_contents('php://input'), true);
 
     $username = trim($data['username'] ?? '');
@@ -11,7 +10,6 @@ function app_handle_login($pdo): array
         return ['success' => false, 'message' => 'Username and password are required.'];
     }
 
-    // Fetch user by username only, then compare password manually
     $stmt = $pdo->prepare("SELECT username, password, level FROM user WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch();
