@@ -1,13 +1,11 @@
 ﻿<?php
 
-session_start();
-if(!isset($_SESSION['username']))
-{
-  echo "
-  <script>
-  window.location.href='../index.php';
-  </script>
-  ";
+require_once __DIR__ . '/includes/app.php';
+app_session_start();
+if (!isset($_SESSION['username'])) {
+    app_discard_output_buffers();
+    header('Location: ' . app_login_action(), true, 302);
+    exit;
 }
 
 ?>

@@ -30,9 +30,12 @@ function app_json_response(array $payload, int $status = 200): void
 
 function app_is_user_root_deploy(): bool
 {
-    return basename(dirname(__DIR__)) === 'user'
-        && is_file(dirname(__DIR__) . '/user.php')
-        && is_file(dirname(__DIR__) . '/connection.php');
+    $root = dirname(__DIR__);
+
+    // Vercel user/ root: user.php + connection.php live beside includes/, not in a nested user/ folder.
+    return is_file($root . '/user.php')
+        && is_file($root . '/connection.php')
+        && !is_file($root . '/user/user.php');
 }
 
 function app_base_path(): string
@@ -118,5 +121,10 @@ function app_login_action(): string
         return app_url('api/index.php');
     }
 
-    return app_url('index.php');
+    if (app_is_user_root_deploy()) {
+        return app_url('api/index.php');
+    }
+
+    // Monorepo: login is served from the project root, not under /user/.
+    return '/';
 }

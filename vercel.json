@@ -2,16 +2,15 @@
   "functions": {
     "api/index.php": {
       "runtime": "vercel-php@0.7.4"
-    },
-    "api/handler.php": {
-      "runtime": "vercel-php@0.7.4"
     }
   },
   "routes": [
     { "src": "/", "dest": "/api/index.php" },
-    { "src": "/user/(.*)", "dest": "/api/handler.php" },
-    { "src": "/farmer/(.*)", "dest": "/api/handler.php" },
-    { "src": "/officers/(.*)", "dest": "/api/handler.php" },
+    { "src": "/index.php", "dest": "/api/index.php" },
+    { "src": "/user/(.*\\.php)", "dest": "/user/$1" },
+    { "src": "/farmer/(.*\\.php)", "dest": "/farmer/$1" },
+    { "src": "/officers/(.*\\.php)", "dest": "/officers/$1" },
+    { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/api/index.php" }
   ]
 }
