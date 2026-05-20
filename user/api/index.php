@@ -1,5 +1,4 @@
-<?php
-ob_start();
+<?php ob_start();
 require_once __DIR__ . '/../includes/auth_cookie.php';
 require_once __DIR__ . '/../includes/app.php';
 app_session_start();

@@ -1,10 +1,11 @@
-<?php
+<?php declare(strict_types=1);
+ob_start();
 /**
  * Vercel entry for dashboard and other .php pages outside /api/.
  * Routes in vercel.json rewrite /path/to/page.php → /api/router.php?file=path/to/page.php
  */
-declare(strict_types=1);
 
+require_once __DIR__ . '/../includes/auth_cookie.php';
 require_once __DIR__ . '/../includes/app.php';
 app_session_start();
 

@@ -1,5 +1,4 @@
-﻿<?php
-ob_start();
+<?php ob_start();
 /**
  * Local XAMPP login (optional). Vercel uses /api/index.php as the entry point.
  */
