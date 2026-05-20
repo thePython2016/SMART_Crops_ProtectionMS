@@ -1,11 +1,10 @@
-﻿<?php
+<?php
+ob_start();
 /**
  * Local XAMPP login (optional). Vercel uses /api/index.php as the entry point.
  */
 require_once __DIR__ . '/includes/app.php';
 app_session_start();
-ob_start();
-
 require_once __DIR__ . '/includes/login_auth.php';
 require_once __DIR__ . '/connection.php';
 

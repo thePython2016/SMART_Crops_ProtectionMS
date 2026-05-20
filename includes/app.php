@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Application base path helpers (supports /crops2 and /crops2/api entry points).
  */
@@ -12,6 +11,9 @@ function app_discard_output_buffers(): void
 
 function app_session_start(): void
 {
+    if (ob_get_level() === 0) {
+        ob_start();
+    }
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }

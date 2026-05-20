@@ -1,8 +1,7 @@
-﻿<?php
+<?php
+ob_start();
 require_once __DIR__ . '/../includes/app.php';
 app_session_start();
-ob_start();
-
 require_once __DIR__ . '/../includes/login_auth.php';
 
 $db_url = getenv('DATABASE_URL');

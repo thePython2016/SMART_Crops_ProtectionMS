@@ -1,5 +1,4 @@
 <?php
-
 function app_login_credentials(): array
 {
     if (isset($_POST['username'])) {
