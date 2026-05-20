@@ -5,11 +5,15 @@
     },
     "api/handler.php": {
       "runtime": "vercel-php@0.7.4"
+    },
+    "api/test.php": {
+      "runtime": "vercel-php@0.7.4"
     }
   },
   "routes": [
     { "src": "/", "dest": "/api/index.php" },
     { "src": "/index.php", "dest": "/api/index.php" },
+    { "src": "/test.php", "dest": "/api/test.php" },
     { "src": "/user/(.*)", "dest": "/api/handler.php" },
     { "src": "/farmer/(.*)", "dest": "/api/handler.php" },
     { "src": "/officers/(.*)", "dest": "/api/handler.php" },
