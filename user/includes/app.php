@@ -16,6 +16,8 @@ if (is_file($repoApp) && realpath($repoApp) !== realpath(__FILE__)) {
     return;
 }
 
+require_once __DIR__ . '/auth_cookie.php';
+
 /**
  * Application base path helpers (supports /crops2 and /crops2/api entry points).
  */
@@ -35,17 +37,17 @@ if (!function_exists('app_session_start')) {
             ob_start();
         }
         if (session_status() === PHP_SESSION_NONE) {
-            $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-                || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
             session_set_cookie_params([
                 'lifetime' => 0,
                 'path' => '/',
-                'secure' => $secure,
+                'secure' => app_cookie_secure(),
                 'httponly' => true,
                 'samesite' => 'Lax',
             ]);
             session_start();
         }
+
+        app_restore_auth_from_cookie();
     }
 }
 

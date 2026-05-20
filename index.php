@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ob_start();
 /**
  * Local XAMPP login (optional). Vercel uses /api/index.php as the entry point.
@@ -13,7 +13,7 @@ $login_error = '';
 if (isset($_POST['login'])) {
     $auth_result = app_handle_login($conn);
     if ($auth_result['success']) {
-        app_redirect(app_dashboard_path($auth_result['level']));
+        app_redirect(app_dashboard_path((int) $auth_result['level']));
     }
     $login_error = $auth_result['message'] ?? 'Invalid username or password. Please try again.';
 }

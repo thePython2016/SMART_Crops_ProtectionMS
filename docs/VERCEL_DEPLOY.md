@@ -28,6 +28,17 @@ Wrong root directory = wrong `vercel.json` or missing `api/` → PHP pages break
 ## Environment variables
 
 - `DATABASE_URL` — PostgreSQL connection string (`sslmode=require`), required for login and dashboards.
+- `AUTH_SECRET` (optional) — signs the `crops_auth` cookie used on Vercel. PHP file sessions are not shared across serverless invocations; without this cookie, login succeeds but the dashboard immediately sends you back to `/`.
+
+## Login redirect URLs (monorepo root)
+
+| User (level) | After login |
+|--------------|-------------|
+| admin (1) | `/user/user.php` |
+| Farmer (2) | `/farmer/user.php` |
+| Agronomist (3) | `/officers/user.php` |
+
+With **Root Directory** = `user`, admin lands on `/user.php` instead.
 
 ## Redeploy
 

@@ -8,6 +8,8 @@ if (function_exists('app_discard_output_buffers')) {
     return;
 }
 
+require_once __DIR__ . '/auth_cookie.php';
+
 function app_discard_output_buffers(): void
 {
     while (ob_get_level() > 0) {
@@ -21,17 +23,17 @@ function app_session_start(): void
         ob_start();
     }
     if (session_status() === PHP_SESSION_NONE) {
-        $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-            || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
         session_set_cookie_params([
             'lifetime' => 0,
             'path' => '/',
-            'secure' => $secure,
+            'secure' => app_cookie_secure(),
             'httponly' => true,
             'samesite' => 'Lax',
         ]);
         session_start();
     }
+
+    app_restore_auth_from_cookie();
 }
 
 /** Require a logged-in dashboard user; redirect to login otherwise. */

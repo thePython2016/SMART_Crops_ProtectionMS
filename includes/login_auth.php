@@ -34,9 +34,7 @@ function app_handle_login(PDO $pdo): array
         return ['success' => false, 'message' => 'Invalid username or password.'];
     }
 
-    app_session_start();
-    $_SESSION['username'] = $user['username'];
-    $_SESSION['level'] = (int) $user['level'];
+    app_set_auth_user($user['username'], (int) $user['level']);
 
     return [
         'success'  => true,

@@ -27,8 +27,13 @@ try {
 }
 
 $login_error = '';
-$is_form_login = $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login']);
+$is_form_login = $_SERVER['REQUEST_METHOD'] === 'POST'
+    && (isset($_POST['login']) || isset($_POST['username']));
 $is_json_login = $_SERVER['REQUEST_METHOD'] === 'POST' && !$is_form_login;
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_SESSION['username'])) {
+    app_redirect(app_dashboard_path((int) ($_SESSION['level'] ?? 1)));
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $auth_result = app_handle_login($pdo);
