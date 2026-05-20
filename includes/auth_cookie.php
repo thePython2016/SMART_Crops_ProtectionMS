@@ -108,16 +108,26 @@ function app_clear_auth_user(): void
     app_session_start();
     unset($_SESSION['username'], $_SESSION['level']);
     $_SESSION = [];
+    $sessionName = session_name();
     if (session_status() === PHP_SESSION_ACTIVE) {
         session_destroy();
     }
 
-    setcookie('crops_auth', '', [
+    $expiredCookie = [
         'expires'  => time() - 3600,
         'path'     => '/',
-        'secure'   => app_cookie_secure(),
         'httponly' => true,
         'samesite' => 'Lax',
-    ]);
+    ];
+
+    // Clear stateless auth cookie defensively for both secure and non-secure variants.
+    setcookie('crops_auth', '', $expiredCookie + ['secure' => true]);
+    setcookie('crops_auth', '', $expiredCookie + ['secure' => false]);
+
+    // Clear native PHP session cookie as well.
+    setcookie($sessionName, '', $expiredCookie + ['secure' => true]);
+    setcookie($sessionName, '', $expiredCookie + ['secure' => false]);
+
     unset($_COOKIE['crops_auth']);
+    unset($_COOKIE[$sessionName]);
 }
