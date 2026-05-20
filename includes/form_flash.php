@@ -79,7 +79,13 @@ function render_form_field_flash(string $fieldName): void
         return;
     }
 
-    echo '<div class="alert alert-danger alert-dismissible fade show form-field-flash mb-2" role="alert">';
+    static $fieldFlashStylePrinted = false;
+    if (!$fieldFlashStylePrinted) {
+        echo '<style>.form-field-flash{width:100%;max-width:100%;margin:0 0 1rem 0;font-weight:600;display:block;}</style>';
+        $fieldFlashStylePrinted = true;
+    }
+
+    echo '<div class="alert alert-danger alert-dismissible fade show form-field-flash mb-3" role="alert">';
     echo htmlspecialchars($text);
     echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
     echo '</div>';
