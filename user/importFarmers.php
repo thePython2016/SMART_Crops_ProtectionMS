@@ -5,12 +5,12 @@ require('connection.php');
 use SimpleExcel\SimpleExcel;
 if(isset($_POST['importFarmers']))
 {
-    if(move_uploaded_file($_FILES['farmers_file']['tmp_name'],"imports/".$_FILES['farmers_file']['name']))
-{
+    $uploadedTmp = $_FILES['farmers_file']['tmp_name'] ?? '';
+    if ($uploadedTmp !== '' && is_uploaded_file($uploadedTmp)) {
     require_once('SimpleExcel/SimpleExcel.php'); 
 
     $excel = new SimpleExcel('csv');                    
-    $excel->parser->loadFile("imports/"  .$_FILES['farmers_file']['name']);           
+    $excel->parser->loadFile($uploadedTmp);           
     
 
     $count=1;
