@@ -4,11 +4,11 @@
  */
 declare(strict_types=1);
 
+require_once __DIR__ . '/auth_cookie.php';
+
 if (function_exists('app_discard_output_buffers')) {
     return;
 }
-
-require_once __DIR__ . '/auth_cookie.php';
 
 function app_discard_output_buffers(): void
 {

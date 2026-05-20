@@ -6,6 +6,8 @@
  */
 declare(strict_types=1);
 
+require_once __DIR__ . '/auth_cookie.php';
+
 if (function_exists('app_discard_output_buffers')) {
     return;
 }
@@ -15,8 +17,6 @@ if (is_file($repoApp) && realpath($repoApp) !== realpath(__FILE__)) {
     require_once $repoApp;
     return;
 }
-
-require_once __DIR__ . '/auth_cookie.php';
 
 /**
  * Application base path helpers (supports /crops2 and /crops2/api entry points).
