@@ -59,6 +59,17 @@ function app_asset(string $path): string
     return app_url($path);
 }
 
+/** Dashboard entry path after a successful login (user.level from the database). */
+function app_dashboard_path(int $level): string
+{
+    return match ($level) {
+        1 => 'user/user.php',
+        2 => 'farmer/user.php',
+        3 => 'officers/user.php',
+        default => 'user/user.php',
+    };
+}
+
 /** Form action URL for the login page (works on / and /api/index.php). */
 function app_login_action(): string
 {

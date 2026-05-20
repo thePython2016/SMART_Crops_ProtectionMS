@@ -9,8 +9,12 @@ require_once __DIR__ . '/connection.php';
 
 $login_error = '';
 
-if (isset($_POST['login']) && !app_handle_login($conn)) {
-    $login_error = 'Invalid username or password. Please try again.';
+if (isset($_POST['login'])) {
+    $auth_result = app_handle_login($conn);
+    if ($auth_result['success']) {
+        app_redirect(app_dashboard_path($auth_result['level']));
+    }
+    $login_error = $auth_result['message'] ?? 'Invalid username or password. Please try again.';
 }
 
 $login_action = app_login_action();

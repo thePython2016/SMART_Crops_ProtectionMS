@@ -1,22 +1,22 @@
-<?php
-ob_start();
-ob_clean(); // ← add this line, clears BOM from buffer immediately
-header('Content-Type: application/json');
-ini_set('display_errors', 0);
+﻿<?php
+
+require_once __DIR__ . '/../includes/app.php';
 require_once __DIR__ . '/../includes/login_auth.php';
+
 $db_url = getenv('DATABASE_URL');
 if (!$db_url) {
-    ob_end_clean();
+    header('Content-Type: application/json');
     echo json_encode(['success' => false, 'error' => 'DATABASE_URL environment variable is missing.']);
     exit;
 }
+
 try {
     $dbopts = parse_url($db_url);
-    $host = $dbopts["host"];
-    $port = $dbopts["port"] ?? 6543;
-    $user = $dbopts["user"];
-    $pass = $dbopts["pass"];
-    $dbname = ltrim($dbopts["path"], '/');
+    $host = $dbopts['host'];
+    $port = $dbopts['port'] ?? 6543;
+    $user = $dbopts['user'];
+    $pass = $dbopts['pass'];
+    $dbname = ltrim($dbopts['path'], '/');
     $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;sslmode=require";
     $pdo = new PDO($dsn, $user, $pass, [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -24,18 +24,30 @@ try {
         PDO::ATTR_EMULATE_PREPARES   => false,
     ]);
 } catch (PDOException $e) {
-    ob_end_clean();
+    header('Content-Type: application/json');
     echo json_encode(['success' => false, 'error' => 'Database connection failed.']);
     exit;
 }
+
+$login_error = '';
+$is_form_login = $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login']);
+$is_json_login = $_SERVER['REQUEST_METHOD'] === 'POST' && !$is_form_login;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $auth_result = app_handle_login($pdo);
-    ob_end_clean();
-    echo json_encode($auth_result);
-    exit;
+
+    if ($is_json_login) {
+        header('Content-Type: application/json');
+        echo json_encode($auth_result);
+        exit;
+    }
+
+    if ($auth_result['success']) {
+        app_redirect(app_dashboard_path($auth_result['level']));
+    }
+
+    $login_error = $auth_result['message'] ?? 'Invalid username or password. Please try again.';
 }
-ob_end_clean();
-echo json_encode([
-    'success' => false,
-    'message' => 'API endpoint is live! Please send a POST request with your login credentials to authenticate.'
-]);
+
+$login_action = app_login_action();
+require __DIR__ . '/../includes/login_page.php';

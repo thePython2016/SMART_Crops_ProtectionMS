@@ -1,27 +1,50 @@
 <?php
-function app_handle_login($pdo): array
+
+function app_login_credentials(): array
 {
-    $data = json_decode(file_get_contents('php://input'), true);
+    if (isset($_POST['username'])) {
+        return [trim((string) $_POST['username']), (string) ($_POST['password'] ?? '')];
+    }
 
-    $username = trim($data['username'] ?? '');
-    $password = trim($data['password'] ?? '');
+    $raw = file_get_contents('php://input');
+    if ($raw === false || $raw === '') {
+        return ['', ''];
+    }
 
-    if (!$username || !$password) {
+    $data = json_decode($raw, true);
+    if (!is_array($data)) {
+        return ['', ''];
+    }
+
+    return [trim((string) ($data['username'] ?? '')), (string) ($data['password'] ?? '')];
+}
+
+function app_handle_login(PDO $pdo): array
+{
+    [$username, $password] = app_login_credentials();
+
+    if ($username === '' || $password === '') {
         return ['success' => false, 'message' => 'Username and password are required.'];
     }
 
-    $stmt = $pdo->prepare("SELECT username, password, level FROM user WHERE username = ?");
+    $stmt = $pdo->prepare('SELECT username, password, level FROM "user" WHERE username = ?');
     $stmt->execute([$username]);
-    $user = $stmt->fetch();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$user || $user['password'] !== $password) {
         return ['success' => false, 'message' => 'Invalid username or password.'];
     }
 
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    $_SESSION['username'] = $user['username'];
+    $_SESSION['level'] = (int) $user['level'];
+
     return [
         'success'  => true,
         'message'  => 'Login successful.',
         'username' => $user['username'],
-        'level'    => (int) $user['level']
+        'level'    => (int) $user['level'],
     ];
 }
