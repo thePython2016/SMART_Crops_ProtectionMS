@@ -1,9 +1,11 @@
 ﻿<?php
-
 /**
  * Local XAMPP login (optional). Vercel uses /api/index.php as the entry point.
  */
 require_once __DIR__ . '/includes/app.php';
+app_session_start();
+ob_start();
+
 require_once __DIR__ . '/includes/login_auth.php';
 require_once __DIR__ . '/connection.php';
 
@@ -17,5 +19,6 @@ if (isset($_POST['login'])) {
     $login_error = $auth_result['message'] ?? 'Invalid username or password. Please try again.';
 }
 
+app_discard_output_buffers();
 $login_action = app_login_action();
 require __DIR__ . '/includes/login_page.php';
