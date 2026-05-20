@@ -13,6 +13,7 @@ require_once __DIR__ . '/includes/auth_guard.php';
   data-template="vertical-menu-template-free"
 >
   <head>
+    <?php require_once __DIR__ . '/includes/early_page_surface.php'; ?>
 
     <meta charset="utf-8" />
     <meta
@@ -148,6 +149,7 @@ require "profile.php";
                      margin-left:50px !important
                      ">
         <?php require 'alert.php'; ?>
+          <?php render_form_field_flash('id'); ?>
           <div class="mb-3 lname">
       <label for="exampleInputPassword1" class="form-label" >Sender name</label>
       <input type="text" class="form-control" name="sender" id="lname" style="width:300px  !important" required placeholder="Sender name">

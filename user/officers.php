@@ -24,6 +24,7 @@ require_once __DIR__ . '/includes/auth_guard.php';
   data-template="vertical-menu-template-free"
 >
   <head>
+    <?php require_once __DIR__ . '/includes/early_page_surface.php'; ?>
 
     <meta charset="utf-8" />
     <meta
@@ -201,6 +202,7 @@ require "profile.php";
       <?php require 'alert.php'; ?>
         <div class="top-first-row">
         <div class="mb-3 mobile">
+    <?php render_form_field_flash('phone'); ?>
     <label for="exampleInputEmail1" class="form-label" >Mobile number</label>
     <input type="phone" id="mobilenumber"  placeholder="Mobile number" name="phone" class="form-control" maxlength="12" placeholder="0761237891" required>
     

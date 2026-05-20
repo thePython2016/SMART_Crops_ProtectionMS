@@ -11,6 +11,7 @@
   data-template="vertical-menu-template-free"
 >
   <head>
+    <?php require_once __DIR__ . '/includes/early_page_surface.php'; ?>
     <meta charset="utf-8" />
     <meta
       name="viewport"

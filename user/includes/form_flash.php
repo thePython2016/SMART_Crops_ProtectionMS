@@ -58,3 +58,39 @@ function render_form_flash(): void
         echo '<style>.form-flash{width:100%;max-width:100%;margin:0 0 1rem 0;font-weight:600;}</style>';
     }
 }
+
+function render_form_field_flash(string $fieldName): void
+{
+    if (!function_exists('app_session_start')) {
+        require_once __DIR__ . '/app.php';
+    }
+    app_session_start();
+
+    if (empty($_SESSION['form_field_errors']) || !is_array($_SESSION['form_field_errors'])) {
+        return;
+    }
+
+    $errors = $_SESSION['form_field_errors'];
+    if (empty($errors[$fieldName])) {
+        return;
+    }
+
+    $text = trim(strip_tags((string) $errors[$fieldName]));
+    unset($_SESSION['form_field_errors'][$fieldName]);
+
+    if ($text === '') {
+        if ($_SESSION['form_field_errors'] === []) {
+            unset($_SESSION['form_field_errors']);
+        }
+        return;
+    }
+
+    echo '<div class="alert alert-danger alert-dismissible fade show form-field-flash mb-2" role="alert">';
+    echo htmlspecialchars($text);
+    echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+    echo '</div>';
+
+    if ($_SESSION['form_field_errors'] === []) {
+        unset($_SESSION['form_field_errors']);
+    }
+}

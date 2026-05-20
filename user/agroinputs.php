@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/includes/auth_guard.php';
 ?>
 <!DOCTYPE html>
@@ -24,6 +24,7 @@ require_once __DIR__ . '/includes/auth_guard.php';
   data-template="vertical-menu-template-free"
 >
   <head>
+    <?php require_once __DIR__ . '/includes/early_page_surface.php'; ?>
 
     <meta charset="utf-8" />
     <meta
@@ -201,6 +202,7 @@ require_once __DIR__ . '/includes/auth_guard.php';
        <form name="" method="POST" action="agroinputsScripts.php">
       <?php require 'alert.php'; ?>
   <div class="mb-3">
+    <?php render_form_field_flash('inputid'); ?>
     <label for="exampleInputEmail1" id="Inputmobile"class="form-label" >Input number</label>
     <input type="text" class="form-control" name="inputid" id="Inputmobile" aria-describedby="emailHelp" required placeholder="Input number">
     

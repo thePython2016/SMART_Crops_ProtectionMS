@@ -2,6 +2,7 @@
 <?php
 require 'connection.php';
 require_once __DIR__ . '/includes/flash.php';
+require_once dirname(__DIR__) . '/includes/pg_duplicate.php';
 function simplePhoneFromat($phones){
     $phone_formated = [];
     foreach($phones as $ph){
@@ -67,7 +68,14 @@ if (curl_errno($ch)) {
     $insertSentmessage=db_query($conn,"insert into sentSMS(id,date,sender_name,receiver_name,subject,message)
             
     values('$id','$date','$sender','$phone','$subject','$message')");
-    app_flash_success('Your message has been sent successfully.');
+    if ($insertSentmessage) {
+        app_flash_success('Your message has been sent successfully.');
+    } else {
+        $err = db_last_error_message($conn);
+        app_flash_from_pg_insert_error($err, [
+            'id' => 'id',
+        ], 'Could not save the sent message. Please try again.');
+    }
     echo "<script>
     window.location.href='bulk-sms.php'
     </script>";

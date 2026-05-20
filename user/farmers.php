@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/includes/auth_guard.php';
 ?>
 <!DOCTYPE html>
@@ -24,6 +24,7 @@ require_once __DIR__ . '/includes/auth_guard.php';
   data-template="vertical-menu-template-free"
 >
   <head>
+    <?php require_once __DIR__ . '/includes/early_page_surface.php'; ?>
 
     <meta charset="utf-8" />
     <meta
@@ -203,12 +204,14 @@ require 'profile.php';
       <?php require 'alert.php'; ?>
         <div class="first-row-form">
               <div class="mb-3 mobile">
+    <?php render_form_field_flash('phone'); ?>
     <label for="exampleInputEmail1" class="form-label" >Mobile number</label>
     <input type="text" id="mobilenumber"  name="phone" class="form-control" maxlength="12" placeholder="0761237891" required>
     
     
   </div>
   <div class="mb-3">
+    <?php render_form_field_flash('email'); ?>
     <label for="exampleInputEmail1" class="form-label" >Email address</label>
     <input type="email" class="form-control" name="email" id="InputAddress" aria-describedby="emailHelp"    placeholder="Email address" required>
     

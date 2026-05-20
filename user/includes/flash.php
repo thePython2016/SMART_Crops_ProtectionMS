@@ -31,3 +31,12 @@ function app_flash_error(string $message): void
     app_ensure_session();
     $_SESSION['form_error'] = $message;
 }
+
+/**
+ * @param array<string, string> $fieldErrors
+ */
+function app_flash_field_errors(array $fieldErrors): void
+{
+    app_ensure_session();
+    $_SESSION['form_field_errors'] = $fieldErrors;
+}

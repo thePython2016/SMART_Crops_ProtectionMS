@@ -2,6 +2,7 @@
 
 require 'connection.php';
 require_once __DIR__ . '/includes/flash.php';
+require_once dirname(__DIR__) . '/includes/pg_duplicate.php';
 
 if (isset($_POST['submit'])) {
     $id = db_escape($conn, $_POST['inputid']);
@@ -15,7 +16,10 @@ if (isset($_POST['submit'])) {
     if ($insertInputs) {
         app_flash_success('Agro input added successfully.');
     } else {
-        app_flash_error('Could not add agro input. Please try again.');
+        $err = db_last_error_message($conn);
+        app_flash_from_pg_insert_error($err, [
+            'inputsnumber' => 'inputid',
+        ], 'Could not add agro input. Please try again.');
     }
 
     echo "<script>window.location.href='agroinputs.php';</script>";
