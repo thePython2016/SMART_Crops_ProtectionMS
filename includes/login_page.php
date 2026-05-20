@@ -26,7 +26,7 @@ $login_error = $login_error ?? '';
     <style>
       body{
         background-color:none;
-        background-image:url('<?php echo htmlspecialchars(app_asset(''/https://smart-crops-protection-system.vercel.app/img/bgIMG.jpeg')); ?>');
+        background-image:url('<?php echo htmlspecialchars(app_asset('img/bgIMG.jpeg')); ?>');
         background-repeat:repeat;
       }
       .btn-color{
@@ -65,7 +65,7 @@ $login_error = $login_error ?? '';
   </head>
   <body>
     <div class="text-center">
-      <img src="<?php echo htmlspecialchars(app_asset('/https://smart-crops-protection-system.vercel.app/img/logo4.png')); ?>"
+      <img src="<?php echo htmlspecialchars(app_asset('img/logo4.png')); ?>"
            class="img-fluid profile-image-pic img-thumbnail rounded-circle"
            width="150" alt="profile">
     </div>
