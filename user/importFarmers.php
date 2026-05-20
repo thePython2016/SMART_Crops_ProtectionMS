@@ -9,8 +9,13 @@ if(isset($_POST['importFarmers']))
     if ($uploadedTmp !== '' && is_uploaded_file($uploadedTmp)) {
     require_once('SimpleExcel/SimpleExcel.php'); 
 
+    $csvPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('farmers_', true) . '.csv';
+    if (!copy($uploadedTmp, $csvPath)) {
+        exit;
+    }
+
     $excel = new SimpleExcel('csv');                    
-    $excel->parser->loadFile($uploadedTmp);           
+    $excel->parser->loadFile($csvPath);           
     
 
     $count=1;
@@ -51,7 +56,8 @@ if(isset($_POST['importFarmers']))
             ";
         }
 
-    }              
+    }
+    @unlink($csvPath);
 
 
 }
