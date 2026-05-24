@@ -148,6 +148,8 @@ $login_error  = $login_error  ?? '';
       font-family: inherit;
     }
     .hx-input::placeholder { color: #bbb; }
+    .hx-select option:disabled { color: #bbb; }
+    .hx-select.placeholder { color: #bbb; }
     .hx-input:focus,
     .hx-select:focus {
       border-color: #268808;
@@ -259,13 +261,21 @@ $login_error  = $login_error  ?? '';
     <img src="<?php echo htmlspecialchars(app_asset('img/logo4.png')); ?>" alt="Logo">
   </div>
 
-  <h1 class="hx-title">WELCOME TO SMART CROP PROTECTION SYSTEM</h1>
-
+  <h1 class="hx-title">WELCOME TO HYPERION-X</h1>
+  <p class="hx-sub">Access your dashboard and unleash the full<br>power of HYPERION-X</p>
 
   <!-- Google SSO -->
- 
+  <a href="#" class="btn-google">
+    <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
+      <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/>
+      <path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/>
+      <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 7.293C4.672 5.163 6.656 3.58 9 3.58z"/>
+    </svg>
+    Continue with Google
+  </a>
 
-
+  <div class="hx-divider">Or, sign in with your email</div>
 
   <form name="form" action="<?php echo htmlspecialchars($login_action); ?>" method="POST">
 
@@ -273,8 +283,7 @@ $login_error  = $login_error  ?? '';
       <p class="login-error"><?php echo htmlspecialchars($login_error); ?></p>
     <?php endif; ?>
 
-    <!-- YOUR ORIGINAL SELECT dropdown — untouched -->
-    <label class="hx-label" for="Username">Username</label>
+    <!-- YOUR ORIGINAL SELECT dropdown — label as first option -->
     <div class="hx-select-wrap">
       <select class="hx-select" aria-label="Username" name="username" id="Username" required>
         <option value="" selected disabled>Username</option>
@@ -285,10 +294,9 @@ $login_error  = $login_error  ?? '';
     </div>
 
     <!-- Password -->
-    <label class="hx-label" for="password">Passwords</label>
     <div class="hx-pwd-wrap">
       <input type="password" name="password" class="hx-input" id="password"
-             placeholder="Enter Your Passwords" required autocomplete="current-password"/>
+             placeholder="Passwords" required autocomplete="current-password"/>
       <button type="button" class="hx-pwd-toggle" aria-label="Toggle password"
               onclick="var i=document.getElementById('password');i.type=i.type==='password'?'text':'password';">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -308,5 +316,10 @@ $login_error  = $login_error  ?? '';
 
 </div>
 
+<script>
+  var sel = document.getElementById("Username");
+  sel.style.color = "#bbb";
+  sel.addEventListener("change", function(){ this.style.color = "#111"; });
+</script>
 </body>
 </html>
