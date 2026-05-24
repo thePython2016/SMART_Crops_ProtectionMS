@@ -183,6 +183,94 @@
                   </div>
                 </div>
 
+                <!-- Farmer Registration Trend — Line chart (full width, below bar chart) -->
+                <div class="col-12 order-2 mb-4">
+                  <div class="card">
+                    <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                      <h5 class="m-0 me-2">Farmer Registration Trend</h5>
+                      <small class="text-muted">Monthly registrations — <?php echo date('Y'); ?></small>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="farmerTrendChart"></canvas>
+                      <script>
+                        <?php
+                          // Build a 12-element array (Jan–Dec) of farmer registration counts
+                          // Query: count farmers grouped by the month of their registration date
+                          $trendData   = array_fill(0, 12, 0);
+                          $currentYear = date('Y');
+
+                          // Adjust column name 'created_at' to match your actual date column in the farmers table
+                          $trendQuery = "
+                            SELECT MONTH(created_at) AS reg_month, COUNT(*) AS total
+                            FROM farmers
+                            WHERE YEAR(created_at) = '$currentYear'
+                            GROUP BY reg_month
+                            ORDER BY reg_month
+                          ";
+                          $trendResult = db_query($conn, $trendQuery);
+                          foreach ($trendResult as $row) {
+                            $trendData[(int)$row['reg_month'] - 1] = (int)$row['total'];
+                          }
+                        ?>
+
+                        var farmerTrendChart = new Chart(document.getElementById('farmerTrendChart'), {
+                          type: 'line',
+                          data: {
+                            labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                            datasets: [{
+                              label: 'Farmers Registered',
+                              data: <?php echo json_encode($trendData); ?>,
+                              fill: true,
+                              backgroundColor: 'rgba(235, 137, 33, 0.12)',
+                              borderColor: '#EB8921',
+                              pointBackgroundColor: '#EB8921',
+                              pointBorderColor: '#ffffff',
+                              pointBorderWidth: 2,
+                              pointRadius: 5,
+                              pointHoverRadius: 7,
+                              tension: 0.4,
+                              borderWidth: 2
+                            }]
+                          },
+                          options: {
+                            responsive: true,
+                            interaction: {
+                              mode: 'index',
+                              intersect: false
+                            },
+                            plugins: {
+                              legend: { display: false },
+                              tooltip: {
+                                callbacks: {
+                                  label: function(ctx) {
+                                    return ' ' + ctx.parsed.y + ' farmer(s) registered';
+                                  }
+                                }
+                              }
+                            },
+                            scales: {
+                              x: {
+                                grid: { display: false },
+                                ticks: { color: '#6c757d' }
+                              },
+                              y: {
+                                beginAtZero: true,
+                                ticks: {
+                                  precision: 0,
+                                  color: '#6c757d'
+                                },
+                                grid: {
+                                  color: 'rgba(0,0,0,0.05)'
+                                }
+                              }
+                            }
+                          }
+                        });
+                      </script>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Agronomists by Region — Doughnut chart -->
                 <div class="col-12 col-md-6 col-lg-6 order-3 order-md-2">
                   <div class="row">
