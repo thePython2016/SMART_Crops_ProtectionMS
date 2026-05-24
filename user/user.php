@@ -248,7 +248,7 @@
                                     };
 
                                     var myChart3 = new Chart(document.getElementById('myChart3'), {
-                                      type: 'bubble',
+                                      type: "doughnut",
                                       data: {
                                         datasets: [{
                                           label: 'Agronomists',
