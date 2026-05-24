@@ -154,12 +154,15 @@
                   </div>
                 </div>
 
-                <!-- Two-column layout: Left = Bar + Line stacked | Right = Doughnut rowspanning both -->
-                <div class="col-12 mb-4">
-                  <div class="row g-4 align-items-stretch">
+              </div><!-- /end summary cards row -->
+            </div><!-- /end summary container -->
 
-                    <!-- LEFT COLUMN: Bar chart + Line chart stacked -->
-                    <div class="col-12 col-lg-6 d-flex flex-column gap-4">
+            <!-- Charts section -->
+            <div class="container-xxl flex-grow-1 container-p-y pt-0">
+              <div class="row g-4 align-items-stretch">
+
+                <!-- LEFT COLUMN: Bar chart + Line chart stacked -->
+                <div class="col-12 col-lg-6 d-flex flex-column gap-4">
 
                       <!-- Bar chart: Farmers by Region -->
                       <div class="card flex-fill">
@@ -348,9 +351,6 @@
                       </div>
                     </div>
                     <!-- / RIGHT COLUMN -->
-
-                  </div>
-                </div>
 
               </div>
             </div>
