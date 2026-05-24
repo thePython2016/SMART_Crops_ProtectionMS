@@ -111,6 +111,16 @@
                 </li>
               </ul>
             </li> 
+            </li>
+            </li>
+            </li>
+			<li class="menu-item">
+              <a href="ai-assistant.php" class="menu-link">
+              <i class="fa-solid fa-cloud fa-icon"></i>
+                <div data-i18n="Boxicons">AI Assistant</div>
+              </a>
+            </li>
+
             <li class="menu-item">
               <a href="weather.php" class="menu-link">
               <i class="fa-solid fa-cloud fa-icon"></i>
