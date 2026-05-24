@@ -154,236 +154,201 @@
                   </div>
                 </div>
 
-                <!-- Farmers by Region — Bar chart -->
-                <div class="col-12 col-lg-6 order-2 order-md-3 order-lg-2 mb-4">
-                  <div class="card">
-                    <div class="row row-bordered g-0">
-                      <div class="col-md-10">
-                        <h5 class="card-header m-0 me-2 pb-3">Farmers by Region</h5>
-                        <canvas id="farmersByregion"></canvas>
-                        <script>
-                          const labels2 = <?php echo json_encode($region) ?>;
-                          var farmersByregion = new Chart(document.getElementById('farmersByregion'), {
-                            type: 'bar',
-                            data: {
-                              labels: labels2,
-                              datasets: [{
-                                label: 'Farmers by Region',
-                                data: <?php echo json_encode($farmers) ?>,
-                                backgroundColor: ['#EB8921','#375E97','#EB8921','#007083'],
-                                borderColor: ['#EB8921'],
-                                borderWidth: 1
-                              }]
-                            },
-                            options: { scales: { y: { beginAtZero: true } } }
-                          });
-                        </script>
+                <!-- Two-column layout: Left = Bar + Line stacked | Right = Doughnut rowspanning both -->
+                <div class="col-12 mb-4">
+                  <div class="row g-4 align-items-stretch">
+
+                    <!-- LEFT COLUMN: Bar chart + Line chart stacked -->
+                    <div class="col-12 col-lg-6 d-flex flex-column gap-4">
+
+                      <!-- Bar chart: Farmers by Region -->
+                      <div class="card flex-fill">
+                        <div class="card-header pb-0">
+                          <h5 class="m-0">Farmers by Region</h5>
+                        </div>
+                        <div class="card-body">
+                          <canvas id="farmersByregion"></canvas>
+                          <script>
+                            const labels2 = <?php echo json_encode($region) ?>;
+                            var farmersByregion = new Chart(document.getElementById('farmersByregion'), {
+                              type: 'bar',
+                              data: {
+                                labels: labels2,
+                                datasets: [{
+                                  label: 'Farmers by Region',
+                                  data: <?php echo json_encode($farmers) ?>,
+                                  backgroundColor: ['#EB8921','#375E97','#EB8921','#007083'],
+                                  borderColor: ['#EB8921'],
+                                  borderWidth: 1
+                                }]
+                              },
+                              options: { scales: { y: { beginAtZero: true } } }
+                            });
+                          </script>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
 
-                <!-- Farmer Registration Trend — Line chart (full width, below bar chart) -->
-                <div class="col-12 order-2 mb-4">
-                  <div class="card">
-                    <div class="card-header d-flex align-items-center justify-content-between pb-0">
-                      <h5 class="m-0 me-2">Farmer Registration Trend</h5>
-                      <small class="text-muted">Monthly registrations — <?php echo date('Y'); ?></small>
-                    </div>
-                    <div class="card-body">
-                      <canvas id="farmerTrendChart"></canvas>
-                      <script>
-                        <?php
-                          // Build a 12-element array (Jan–Dec) of farmer registration counts
-                          // Query: count farmers grouped by the month of their registration date
-                          $trendData   = array_fill(0, 12, 0);
-                          $currentYear = date('Y');
-
-                          // Adjust column name 'created_at' to match your actual date column in the farmers table
-                          $trendQuery = "
-                            SELECT MONTH(created_at) AS reg_month, COUNT(*) AS total
-                            FROM farmers
-                            WHERE YEAR(created_at) = '$currentYear'
-                            GROUP BY reg_month
-                            ORDER BY reg_month
-                          ";
-                          $trendResult = db_query($conn, $trendQuery);
-                          foreach ($trendResult as $row) {
-                            $trendData[(int)$row['reg_month'] - 1] = (int)$row['total'];
-                          }
-                        ?>
-
-                        var farmerTrendChart = new Chart(document.getElementById('farmerTrendChart'), {
-                          type: 'line',
-                          data: {
-                            labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-                            datasets: [{
-                              label: 'Farmers Registered',
-                              data: <?php echo json_encode($trendData); ?>,
-                              fill: true,
-                              backgroundColor: 'rgba(235, 137, 33, 0.12)',
-                              borderColor: '#EB8921',
-                              pointBackgroundColor: '#EB8921',
-                              pointBorderColor: '#ffffff',
-                              pointBorderWidth: 2,
-                              pointRadius: 5,
-                              pointHoverRadius: 7,
-                              tension: 0.4,
-                              borderWidth: 2
-                            }]
-                          },
-                          options: {
-                            responsive: true,
-                            interaction: {
-                              mode: 'index',
-                              intersect: false
-                            },
-                            plugins: {
-                              legend: { display: false },
-                              tooltip: {
-                                callbacks: {
-                                  label: function(ctx) {
-                                    return ' ' + ctx.parsed.y + ' farmer(s) registered';
+                      <!-- Line chart: Farmer Registration Trend -->
+                      <div class="card flex-fill">
+                        <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                          <h5 class="m-0">Farmer Registration Trend</h5>
+                          <small class="text-muted">Monthly registrations — <?php echo date('Y'); ?></small>
+                        </div>
+                        <div class="card-body">
+                          <canvas id="farmerTrendChart"></canvas>
+                          <script>
+                            <?php
+                              $trendData   = array_fill(0, 12, 0);
+                              $currentYear = date('Y');
+                              $trendQuery  = "
+                                SELECT MONTH(created_at) AS reg_month, COUNT(*) AS total
+                                FROM farmers
+                                WHERE YEAR(created_at) = '$currentYear'
+                                GROUP BY reg_month
+                                ORDER BY reg_month
+                              ";
+                              $trendResult = db_query($conn, $trendQuery);
+                              foreach ($trendResult as $row) {
+                                $trendData[(int)$row['reg_month'] - 1] = (int)$row['total'];
+                              }
+                            ?>
+                            var farmerTrendChart = new Chart(document.getElementById('farmerTrendChart'), {
+                              type: 'line',
+                              data: {
+                                labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                                datasets: [{
+                                  label: 'Farmers Registered',
+                                  data: <?php echo json_encode($trendData); ?>,
+                                  fill: true,
+                                  backgroundColor: 'rgba(235, 137, 33, 0.12)',
+                                  borderColor: '#EB8921',
+                                  pointBackgroundColor: '#EB8921',
+                                  pointBorderColor: '#ffffff',
+                                  pointBorderWidth: 2,
+                                  pointRadius: 5,
+                                  pointHoverRadius: 7,
+                                  tension: 0.4,
+                                  borderWidth: 2
+                                }]
+                              },
+                              options: {
+                                responsive: true,
+                                interaction: { mode: 'index', intersect: false },
+                                plugins: {
+                                  legend: { display: false },
+                                  tooltip: {
+                                    callbacks: {
+                                      label: function(ctx) {
+                                        return ' ' + ctx.parsed.y + ' farmer(s) registered';
+                                      }
+                                    }
+                                  }
+                                },
+                                scales: {
+                                  x: { grid: { display: false }, ticks: { color: '#6c757d' } },
+                                  y: {
+                                    beginAtZero: true,
+                                    ticks: { precision: 0, color: '#6c757d' },
+                                    grid: { color: 'rgba(0,0,0,0.05)' }
                                   }
                                 }
                               }
-                            },
-                            scales: {
-                              x: {
-                                grid: { display: false },
-                                ticks: { color: '#6c757d' }
-                              },
-                              y: {
-                                beginAtZero: true,
-                                ticks: {
-                                  precision: 0,
-                                  color: '#6c757d'
-                                },
-                                grid: {
-                                  color: 'rgba(0,0,0,0.05)'
-                                }
-                              }
-                            }
-                          }
-                        });
-                      </script>
+                            });
+                          </script>
+                        </div>
+                      </div>
+
                     </div>
-                  </div>
-                </div>
+                    <!-- / LEFT COLUMN -->
 
-                <!-- Agronomists by Region — Doughnut chart -->
-                <div class="col-12 col-md-6 col-lg-6 order-3 order-md-2">
-                  <div class="row">
-                    <div class="col-12 mb-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
-                            <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between w-100">
-                              <div class="card-title">
-                                <h5 class="text-nowrap mb-2">Agronomists by Region</h5>
-                              </div>
-                              <div class="mt-sm-auto w-100">
-
-                                <div style="max-width:400px; margin: 0 auto;">
-                                  <canvas id="myChart3"></canvas>
-                                </div>
-
-                                <script>
-                                  const labels3 = <?php echo json_encode($address); ?>;
-                                  const counts3 = <?php echo json_encode($officerCount); ?>;
-
-                                  const doughnutColors = [
-                                    '#EB8921','#375E97','#f1ba21','#9c27b0',
-                                    '#007083','#e53935','#43a047','#8e24aa'
-                                  ];
-
-                                  // Plugin: draw region name + count inside each slice
-                                  const doughnutSliceLabelPlugin = {
-                                    id: 'doughnutSliceLabels',
-                                    afterDatasetsDraw: function(chart) {
-                                      var ctx = chart.ctx;
-                                      var dataset = chart.data.datasets[0];
-                                      var meta    = chart.getDatasetMeta(0);
-                                      var total   = dataset.data.reduce(function(a, b) { return a + b; }, 0);
-
-                                      meta.data.forEach(function(arc, i) {
-                                        var model      = arc;
-                                        var startAngle = model.startAngle;
-                                        var endAngle   = model.endAngle;
-                                        var midAngle   = startAngle + (endAngle - startAngle) / 2;
-
-                                        // Position label at ~65% of the way from centre to outer edge
-                                        var outerR = model.outerRadius;
-                                        var innerR = model.innerRadius;
-                                        var r      = innerR + (outerR - innerR) * 0.65;
-
-                                        var x = model.x + r * Math.cos(midAngle);
-                                        var y = model.y + r * Math.sin(midAngle);
-
-                                        // Only draw if slice is large enough to fit text
-                                        var sliceDeg = (endAngle - startAngle) * (180 / Math.PI);
-                                        if (sliceDeg < 15) return;
-
-                                        ctx.save();
-                                        ctx.textAlign    = 'center';
-                                        ctx.textBaseline = 'middle';
-                                        ctx.fillStyle    = '#ffffff';
-
-                                        // Region name — small font, slightly above
-                                        ctx.font = 'bold 10px "Public Sans", Segoe UI, sans-serif';
-                                        ctx.fillText(labels3[i], x, y - 8);
-
-                                        // Count — larger font, below region name
-                                        ctx.font = 'bold 14px "Public Sans", Segoe UI, sans-serif';
-                                        ctx.fillText(counts3[i], x, y + 8);
-
-                                        ctx.restore();
-                                      });
-                                    }
-                                  };
-
-                                  var myChart3 = new Chart(document.getElementById('myChart3'), {
-                                    type: 'doughnut',
-                                    data: {
-                                      labels: labels3,
-                                      datasets: [{
-                                        label: 'Agronomists',
-                                        data: counts3,
-                                        backgroundColor: labels3.map(function(_, i) {
-                                          return doughnutColors[i % doughnutColors.length] + 'cc';
-                                        }),
-                                        borderColor: labels3.map(function(_, i) {
-                                          return doughnutColors[i % doughnutColors.length];
-                                        }),
-                                        borderWidth: 2
-                                      }]
-                                    },
-                                    options: {
-                                      responsive: true,
-                                      plugins: {
-                                        legend: {
-                                          display: true,
-                                          position: 'bottom'
-                                        },
-                                        tooltip: {
-                                          callbacks: {
-                                            label: function(ctx) {
-                                              return ctx.label + ': ' + ctx.parsed + ' agronomist(s)';
-                                            }
-                                          }
-                                        }
-                                      }
-                                    },
-                                    plugins: [doughnutSliceLabelPlugin]
-                                  });
-                                </script>
-
-                              </div>
-                            </div>
+                    <!-- RIGHT COLUMN: Doughnut rowspanning bar + line -->
+                    <div class="col-12 col-lg-6 d-flex">
+                      <div class="card w-100">
+                        <div class="card-header pb-0">
+                          <h5 class="m-0">Agronomists by Region</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                          <div style="width:100%; max-width:420px;">
+                            <canvas id="myChart3"></canvas>
                           </div>
+                          <script>
+                            const labels3 = <?php echo json_encode($address); ?>;
+                            const counts3 = <?php echo json_encode($officerCount); ?>;
+
+                            const doughnutColors = [
+                              '#EB8921','#375E97','#f1ba21','#9c27b0',
+                              '#007083','#e53935','#43a047','#8e24aa'
+                            ];
+
+                            const doughnutSliceLabelPlugin = {
+                              id: 'doughnutSliceLabels',
+                              afterDatasetsDraw: function(chart) {
+                                var ctx     = chart.ctx;
+                                var dataset = chart.data.datasets[0];
+                                var meta    = chart.getDatasetMeta(0);
+
+                                meta.data.forEach(function(arc, i) {
+                                  var startAngle = arc.startAngle;
+                                  var endAngle   = arc.endAngle;
+                                  var midAngle   = startAngle + (endAngle - startAngle) / 2;
+                                  var outerR     = arc.outerRadius;
+                                  var innerR     = arc.innerRadius;
+                                  var r          = innerR + (outerR - innerR) * 0.65;
+                                  var x          = arc.x + r * Math.cos(midAngle);
+                                  var y          = arc.y + r * Math.sin(midAngle);
+                                  var sliceDeg   = (endAngle - startAngle) * (180 / Math.PI);
+                                  if (sliceDeg < 15) return;
+
+                                  ctx.save();
+                                  ctx.textAlign    = 'center';
+                                  ctx.textBaseline = 'middle';
+                                  ctx.fillStyle    = '#ffffff';
+                                  ctx.font = 'bold 10px "Public Sans", Segoe UI, sans-serif';
+                                  ctx.fillText(labels3[i], x, y - 8);
+                                  ctx.font = 'bold 14px "Public Sans", Segoe UI, sans-serif';
+                                  ctx.fillText(counts3[i], x, y + 8);
+                                  ctx.restore();
+                                });
+                              }
+                            };
+
+                            var myChart3 = new Chart(document.getElementById('myChart3'), {
+                              type: 'doughnut',
+                              data: {
+                                labels: labels3,
+                                datasets: [{
+                                  label: 'Agronomists',
+                                  data: counts3,
+                                  backgroundColor: labels3.map(function(_, i) {
+                                    return doughnutColors[i % doughnutColors.length] + 'cc';
+                                  }),
+                                  borderColor: labels3.map(function(_, i) {
+                                    return doughnutColors[i % doughnutColors.length];
+                                  }),
+                                  borderWidth: 2
+                                }]
+                              },
+                              options: {
+                                responsive: true,
+                                plugins: {
+                                  legend: { display: true, position: 'bottom' },
+                                  tooltip: {
+                                    callbacks: {
+                                      label: function(ctx) {
+                                        return ctx.label + ': ' + ctx.parsed + ' agronomist(s)';
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              plugins: [doughnutSliceLabelPlugin]
+                            });
+                          </script>
                         </div>
                       </div>
                     </div>
+                    <!-- / RIGHT COLUMN -->
+
                   </div>
                 </div>
 
