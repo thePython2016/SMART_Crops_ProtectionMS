@@ -73,7 +73,7 @@ $login_error  = $login_error  ?? '';
 
   </form>
 
-  <p class="hx-register">Don't have an Account ? <a href="#">Contact administrator</a></p>
+  <p class="hx-register">Don't have an Account ? <a hrefg="#">Contact administrator</a></p>
 
 </div>
 
