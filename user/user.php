@@ -674,10 +674,9 @@
           <button class="ai-chat-header-close" onclick="toggleAiChat()" aria-label="Close">&times;</button>
         </div>
         <div class="ai-chat-body">
-          <p>👋 Hello! I'm your <strong>CRPIMS AI Assistant</strong>.</p>
-          <p>I can help you analyze farmer data, generate insights on agronomist activity, and answer questions about your agro-inputs.</p>
+          <p>COMING SOON</P>
         </div>
-        <div class="ai-chat-footer">🔒 Powered by CRPIMS Intelligence</div>
+       
       </div>
 
       <button id="ai-assistant-btn" onclick="toggleAiChat()" title="AI Assistant" aria-label="Open AI Assistant">
