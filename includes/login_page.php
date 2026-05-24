@@ -26,7 +26,6 @@ $login_error  = $login_error  ?? '';
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── Background: your original bgIMG.jpeg ── */
     body {
       min-height: 100vh;
       display: flex;
@@ -39,7 +38,6 @@ $login_error  = $login_error  ?? '';
       background-size: auto;
     }
 
-    /* ── Card — Hyperion-X style ── */
     .hx-card {
       background: #ffffff;
       border-radius: 16px;
@@ -55,87 +53,33 @@ $login_error  = $login_error  ?? '';
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── Logo ── */
     .hx-logo {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
-
     .hx-logo img {
       height: 56px;
       width: auto;
       object-fit: contain;
     }
 
-    /* ── Headings ── */
     .hx-title {
-      font-size: 20px;
+      font-size: 17px;
       font-weight: 700;
       text-align: center;
       color: #111;
-      margin-bottom: 4px;
+      margin-bottom: 24px;
       letter-spacing: .01em;
+      line-height: 1.4;
     }
 
-    .hx-sub {
-      font-size: 12px;
-      color: #888;
-      text-align: center;
-      margin-bottom: 22px;
-      line-height: 1.5;
-    }
-
-    /* ── Google button ── */
-    .btn-google {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding: 10px 16px;
-      border: 1.5px solid #e2e2e2;
-      border-radius: 8px;
-      background: #fff;
-      font-size: 13.5px;
-      font-weight: 500;
-      color: #111;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background .15s, border-color .15s;
-      margin-bottom: 0;
-    }
-    .btn-google:hover { background: #f7f7f7; border-color: #c8c8c8; color: #111; }
-
-    /* ── Divider ── */
-    .hx-divider {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 18px 0;
-      font-size: 11.5px;
-      color: #aaa;
-    }
-    .hx-divider::before,
-    .hx-divider::after { content:''; flex:1; height:1px; background:#e2e2e2; }
-
-    /* ── Field labels ── */
-    .hx-label {
-      display: block;
-      font-size: 11.5px;
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 5px;
-      letter-spacing: .03em;
-    }
-
-    /* ── Inputs & SELECT — keep your original select, restyle to match ── */
+    /* ── Inputs & SELECT ── */
     .hx-input,
     .hx-select {
       width: 100%;
-      padding: 10px 13px;
+      padding: 11px 13px;
       border: 1.5px solid #e2e2e2;
       border-radius: 8px;
       background: #fafafa;
@@ -148,19 +92,18 @@ $login_error  = $login_error  ?? '';
       font-family: inherit;
     }
     .hx-input::placeholder { color: #bbb; }
-    .hx-select option:disabled { color: #bbb; }
-    .hx-select.placeholder { color: #bbb; }
+    .hx-select.empty        { color: #bbb; }
     .hx-input:focus,
     .hx-select:focus {
       border-color: #268808;
       box-shadow: 0 0 0 3px rgba(38,136,8,.12);
     }
 
+    /* field spacing */
+    .hx-field { margin-bottom: 14px; }
+
     /* Custom chevron for select */
-    .hx-select-wrap {
-      position: relative;
-      margin-bottom: 14px;
-    }
+    .hx-select-wrap { position: relative; }
     .hx-select-wrap::after {
       content: '';
       pointer-events: none;
@@ -174,10 +117,7 @@ $login_error  = $login_error  ?? '';
     }
 
     /* Password row */
-    .hx-pwd-wrap {
-      position: relative;
-      margin-bottom: 6px;
-    }
+    .hx-pwd-wrap { position: relative; }
     .hx-pwd-wrap .hx-input { padding-right: 42px; }
     .hx-pwd-toggle {
       position: absolute;
@@ -190,7 +130,8 @@ $login_error  = $login_error  ?? '';
 
     .hx-forgot {
       text-align: right;
-      margin-bottom: 14px;
+      margin-top: 6px;
+      margin-bottom: 4px;
     }
     .hx-forgot a {
       font-size: 11.5px; color: #888;
@@ -199,7 +140,6 @@ $login_error  = $login_error  ?? '';
     }
     .hx-forgot a:hover { color: #268808; }
 
-    /* ── Error ── */
     .login-error {
       color: #b00020;
       font-weight: 600;
@@ -212,7 +152,6 @@ $login_error  = $login_error  ?? '';
       padding: 8px 12px;
     }
 
-    /* ── Login button ── */
     .btn-login {
       width: 100%;
       padding: 11px;
@@ -224,13 +163,12 @@ $login_error  = $login_error  ?? '';
       font-weight: 500;
       letter-spacing: .05em;
       cursor: pointer;
+      margin-top: 18px;
       transition: opacity .18s, transform .12s;
-      margin-bottom: 0;
     }
     .btn-login:hover  { opacity: .85; }
     .btn-login:active { transform: scale(.98); }
 
-    /* ── Register line ── */
     .hx-register {
       text-align: center;
       margin-top: 18px;
@@ -256,26 +194,11 @@ $login_error  = $login_error  ?? '';
 
 <div class="hx-card">
 
-  <!-- Your original logo -->
   <div class="hx-logo">
     <img src="<?php echo htmlspecialchars(app_asset('img/logo4.png')); ?>" alt="Logo">
   </div>
 
-  <h1 class="hx-title">WELCOME TO HYPERION-X</h1>
-  <p class="hx-sub">Access your dashboard and unleash the full<br>power of HYPERION-X</p>
-
-  <!-- Google SSO -->
-  <a href="#" class="btn-google">
-    <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-      <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
-      <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/>
-      <path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/>
-      <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 7.293C4.672 5.163 6.656 3.58 9 3.58z"/>
-    </svg>
-    Continue with Google
-  </a>
-
-  <div class="hx-divider">Or, sign in with your email</div>
+  <h1 class="hx-title">WELCOME TO SMART CROP PROTECTION SYSTEM</h1>
 
   <form name="form" action="<?php echo htmlspecialchars($login_action); ?>" method="POST">
 
@@ -283,9 +206,10 @@ $login_error  = $login_error  ?? '';
       <p class="login-error"><?php echo htmlspecialchars($login_error); ?></p>
     <?php endif; ?>
 
-    <!-- YOUR ORIGINAL SELECT dropdown — label as first option -->
-    <div class="hx-select-wrap">
-      <select class="hx-select" aria-label="Username" name="username" id="Username" required>
+    <!-- Username dropdown — "Username" shown as placeholder inside field -->
+    <div class="hx-field hx-select-wrap">
+      <select class="hx-select empty" name="username" id="Username" required
+              onchange="this.classList.remove('empty')">
         <option value="" selected disabled>Username</option>
         <option value="admin">Admin</option>
         <option value="Farmer">Farmer</option>
@@ -293,12 +217,12 @@ $login_error  = $login_error  ?? '';
       </select>
     </div>
 
-    <!-- Password -->
-    <div class="hx-pwd-wrap">
+    <!-- Password — placeholder shown inside field -->
+    <div class="hx-field hx-pwd-wrap">
       <input type="password" name="password" class="hx-input" id="password"
-             placeholder="Passwords" required autocomplete="current-password"/>
+             placeholder="Password" required autocomplete="current-password"/>
       <button type="button" class="hx-pwd-toggle" aria-label="Toggle password"
-              onclick="var i=document.getElementById('password');i.type=i.type==='password'?'text':'password';">
+              onclick="var i=document.getElementById('password');i.type=i.type==='password'?'text':'password';this.querySelector('svg').style.opacity=i.type==='text'?.5:1;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12z"/>
@@ -306,6 +230,7 @@ $login_error  = $login_error  ?? '';
         </svg>
       </button>
     </div>
+
     <div class="hx-forgot"><a href="#">Forgot Password?</a></div>
 
     <button type="submit" name="login" class="btn-login">Login</button>
@@ -316,10 +241,5 @@ $login_error  = $login_error  ?? '';
 
 </div>
 
-<script>
-  var sel = document.getElementById("Username");
-  sel.style.color = "#bbb";
-  sel.addEventListener("change", function(){ this.style.color = "#111"; });
-</script>
 </body>
 </html>
