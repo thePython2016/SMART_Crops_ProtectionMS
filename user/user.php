@@ -183,117 +183,66 @@
                   </div>
                 </div>
 
-                <!-- Agronomists by Region — BUBBLE chart (one bubble per region, label+count inside) -->
+                <!-- Agronomists by Region — Doughnut chart -->
                 <div class="col-12 col-md-6 col-lg-6 order-3 order-md-2">
                   <div class="row">
                     <div class="col-12 mb-4">
                       <div class="card">
                         <div class="card-body">
                           <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
-                            <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+                            <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between w-100">
                               <div class="card-title">
                                 <h5 class="text-nowrap mb-2">Agronomists by Region</h5>
                               </div>
-                              <div class="mt-sm-auto">
+                              <div class="mt-sm-auto w-100">
 
-                                <div style="width:400px">
+                                <div style="max-width:400px; margin: 0 auto;">
                                   <canvas id="myChart3"></canvas>
-                                  <script>
-                                    const labels3 = <?php echo json_encode($address); ?>;
-                                    const counts3 = <?php echo json_encode($officerCount); ?>;
+                                </div>
 
-                                    const bubbleColors = [
-                                      '#EB8921','#375E97','#f1ba21','#9c27b0',
-                                      '#007083','#e53935','#43a047','#8e24aa'
-                                    ];
+                                <script>
+                                  const labels3 = <?php echo json_encode($address); ?>;
+                                  const counts3 = <?php echo json_encode($officerCount); ?>;
 
-                                    // All regions in ONE dataset — one bubble per region
-                                    const allBubbles = labels3.map(function(label, i) {
-                                      return {
-                                        x: i + 1,
-                                        y: counts3[i],
-                                        r: Math.max(24, counts3[i] * 6)
-                                      };
-                                    });
+                                  const doughnutColors = [
+                                    '#EB8921','#375E97','#f1ba21','#9c27b0',
+                                    '#007083','#e53935','#43a047','#8e24aa'
+                                  ];
 
-                                    // Custom plugin: draw region name + count inside each bubble
-                                    const bubbleLabelPlugin = {
-                                      id: 'bubbleLabels',
-                                      afterDatasetsDraw: function(chart) {
-                                        var ctx = chart.ctx;
-                                        chart.data.datasets.forEach(function(dataset, dsi) {
-                                          var meta = chart.getDatasetMeta(dsi);
-                                          meta.data.forEach(function(bubble, i) {
-                                            var raw = dataset.data[i];
-                                            var x   = bubble.x;
-                                            var y   = bubble.y;
-
-                                            ctx.save();
-                                            ctx.textAlign    = 'center';
-                                            ctx.textBaseline = 'middle';
-                                            ctx.fillStyle    = '#ffffff';
-
-                                            // Region name — smaller font, slightly above centre
-                                            ctx.font = 'bold 11px "Public Sans", Segoe UI, sans-serif';
-                                            ctx.fillText(labels3[i], x, y - 8);
-
-                                            // Count — larger font, below centre
-                                            ctx.font = 'bold 15px "Public Sans", Segoe UI, sans-serif';
-                                            ctx.fillText(raw.y, x, y + 9);
-
-                                            ctx.restore();
-                                          });
-                                        });
-                                      }
-                                    };
-
-                                    var myChart3 = new Chart(document.getElementById('myChart3'), {
-                                      type: "doughnut",
-                                      data: {
-                                        datasets: [{
-                                          label: 'Agronomists',
-                                          data: allBubbles,
-                                          backgroundColor: labels3.map(function(_, i) {
-                                            return bubbleColors[i % bubbleColors.length] + 'cc';
-                                          }),
-                                          borderColor: labels3.map(function(_, i) {
-                                            return bubbleColors[i % bubbleColors.length];
-                                          }),
-                                          borderWidth: 2
-                                        }]
-                                      },
-                                      options: {
-                                        responsive: true,
-                                        plugins: {
-                                          legend: { display: false },
-                                          tooltip: {
-                                            callbacks: {
-                                              label: function(ctx) {
-                                                return labels3[ctx.dataIndex] + ': ' + ctx.raw.y + ' agronomist(s)';
-                                              }
+                                  var myChart3 = new Chart(document.getElementById('myChart3'), {
+                                    type: 'doughnut',
+                                    data: {
+                                      labels: labels3,
+                                      datasets: [{
+                                        label: 'Agronomists',
+                                        data: counts3,
+                                        backgroundColor: labels3.map(function(_, i) {
+                                          return doughnutColors[i % doughnutColors.length] + 'cc';
+                                        }),
+                                        borderColor: labels3.map(function(_, i) {
+                                          return doughnutColors[i % doughnutColors.length];
+                                        }),
+                                        borderWidth: 2
+                                      }]
+                                    },
+                                    options: {
+                                      responsive: true,
+                                      plugins: {
+                                        legend: {
+                                          display: true,
+                                          position: 'bottom'
+                                        },
+                                        tooltip: {
+                                          callbacks: {
+                                            label: function(ctx) {
+                                              return ctx.label + ': ' + ctx.parsed + ' agronomist(s)';
                                             }
                                           }
-                                        },
-                                        scales: {
-                                          x: {
-                                            title: { display: true, text: 'Region' },
-                                            ticks: {
-                                              stepSize: 1,
-                                              callback: function(val) { return labels3[val - 1] || ''; }
-                                            },
-                                            min: 0,
-                                            max: labels3.length + 1
-                                          },
-                                          y: {
-                                            title: { display: true, text: 'No. of Agronomists' },
-                                            beginAtZero: true
-                                          }
                                         }
-                                      },
-                                      plugins: [bubbleLabelPlugin]
-                                    });
-                                  </script>
-                                </div>
+                                      }
+                                    }
+                                  });
+                                </script>
 
                               </div>
                             </div>
