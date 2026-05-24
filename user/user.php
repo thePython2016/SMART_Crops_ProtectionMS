@@ -517,5 +517,192 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/dashboards-analytics.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- ========== AI ASSISTANT FLOATING BUTTON ========== -->
+    <style>
+      #ai-assistant-fab {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+      }
+
+      #ai-assistant-btn {
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #375E97 0%, #007083 100%);
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 18px rgba(55, 94, 151, 0.45);
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
+        outline: none;
+      }
+
+      #ai-assistant-btn:hover {
+        transform: translateY(-3px) scale(1.07);
+        box-shadow: 0 8px 28px rgba(55, 94, 151, 0.55);
+      }
+
+      #ai-assistant-btn:active {
+        transform: scale(0.96);
+      }
+
+      #ai-assistant-btn svg {
+        width: 28px;
+        height: 28px;
+        fill: #ffffff;
+      }
+
+      #ai-assistant-btn::before {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        border: 2px solid rgba(55, 94, 151, 0.4);
+        animation: ai-pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes ai-pulse {
+        0%, 100% { transform: scale(1); opacity: 0.6; }
+        50%       { transform: scale(1.15); opacity: 0; }
+      }
+
+      #ai-assistant-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #375E97;
+        letter-spacing: 0.3px;
+        background: #fff;
+        padding: 3px 10px;
+        border-radius: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        white-space: nowrap;
+        user-select: none;
+      }
+
+      #ai-chat-modal {
+        display: none;
+        position: fixed;
+        bottom: 110px;
+        right: 28px;
+        z-index: 9998;
+        width: 340px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+        overflow: hidden;
+        flex-direction: column;
+        animation: ai-slide-in 0.25s ease;
+      }
+
+      @keyframes ai-slide-in {
+        from { opacity: 0; transform: translateY(16px) scale(0.97); }
+        to   { opacity: 1; transform: translateY(0)   scale(1);    }
+      }
+
+      #ai-chat-modal.open { display: flex; }
+
+      .ai-chat-header {
+        background: linear-gradient(135deg, #375E97 0%, #007083 100%);
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #fff;
+      }
+
+      .ai-chat-header-title {
+        font-size: 14px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .ai-chat-header-close {
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 22px;
+        cursor: pointer;
+        line-height: 1;
+        padding: 0;
+        outline: none;
+      }
+
+      .ai-chat-header-close:hover { color: #fff; }
+
+      .ai-chat-body {
+        padding: 16px;
+        font-size: 13px;
+        color: #444;
+        background: #f7f9fb;
+        min-height: 80px;
+      }
+
+      .ai-chat-body p { margin: 0 0 8px; }
+
+      .ai-chat-footer {
+        padding: 12px 16px;
+        border-top: 1px solid #eee;
+        font-size: 12px;
+        color: #888;
+        text-align: center;
+        background: #fff;
+      }
+    </style>
+
+    <div id="ai-assistant-fab">
+      <div id="ai-chat-modal">
+        <div class="ai-chat-header">
+          <div class="ai-chat-header-title">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18" height="18">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zm1 14h-2v-1h2v1zm0-3h-2v-1.28A5.01 5.01 0 0 1 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5a5.01 5.01 0 0 1-4 4.72V13zm-1-5.5L10.62 11H11v1h2v-1h.38L12 8.5z"/>
+            </svg>
+            AI Assistant
+          </div>
+          <button class="ai-chat-header-close" onclick="toggleAiChat()" aria-label="Close">&times;</button>
+        </div>
+        <div class="ai-chat-body">
+          <p>👋 Hello! I'm your <strong>CRPIMS AI Assistant</strong>.</p>
+          <p>I can help you analyze farmer data, generate insights on agronomist activity, and answer questions about your agro-inputs.</p>
+        </div>
+        <div class="ai-chat-footer">🔒 Powered by CRPIMS Intelligence</div>
+      </div>
+
+      <button id="ai-assistant-btn" onclick="toggleAiChat()" title="AI Assistant" aria-label="Open AI Assistant">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M12 2l2.09 6.26L20 10l-5.91 1.74L12 18l-2.09-6.26L4 10l5.91-1.74L12 2zm0 4.34L10.8 9.8 7.6 10l3.2.2L12 13.66l1.2-3.46 3.2-.2-3.2-.2L12 6.34zM5 19l1.5-4L5 19zm14 0l-1.5-4L19 19z"/>
+        </svg>
+      </button>
+      <span id="ai-assistant-label">AI Assistant</span>
+    </div>
+
+    <script>
+      function toggleAiChat() {
+        var modal = document.getElementById('ai-chat-modal');
+        modal.classList.toggle('open');
+      }
+
+      document.addEventListener('click', function(e) {
+        var fab   = document.getElementById('ai-assistant-fab');
+        var modal = document.getElementById('ai-chat-modal');
+        if (modal.classList.contains('open') && !fab.contains(e.target)) {
+          modal.classList.remove('open');
+        }
+      });
+    </script>
+    <!-- ========== / AI ASSISTANT FLOATING BUTTON ========== -->
+
   </body>
 </html>
