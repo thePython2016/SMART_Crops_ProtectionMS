@@ -209,6 +209,51 @@
                                     '#007083','#e53935','#43a047','#8e24aa'
                                   ];
 
+                                  // Plugin: draw region name + count inside each slice
+                                  const doughnutSliceLabelPlugin = {
+                                    id: 'doughnutSliceLabels',
+                                    afterDatasetsDraw: function(chart) {
+                                      var ctx = chart.ctx;
+                                      var dataset = chart.data.datasets[0];
+                                      var meta    = chart.getDatasetMeta(0);
+                                      var total   = dataset.data.reduce(function(a, b) { return a + b; }, 0);
+
+                                      meta.data.forEach(function(arc, i) {
+                                        var model      = arc;
+                                        var startAngle = model.startAngle;
+                                        var endAngle   = model.endAngle;
+                                        var midAngle   = startAngle + (endAngle - startAngle) / 2;
+
+                                        // Position label at ~65% of the way from centre to outer edge
+                                        var outerR = model.outerRadius;
+                                        var innerR = model.innerRadius;
+                                        var r      = innerR + (outerR - innerR) * 0.65;
+
+                                        var x = model.x + r * Math.cos(midAngle);
+                                        var y = model.y + r * Math.sin(midAngle);
+
+                                        // Only draw if slice is large enough to fit text
+                                        var sliceDeg = (endAngle - startAngle) * (180 / Math.PI);
+                                        if (sliceDeg < 15) return;
+
+                                        ctx.save();
+                                        ctx.textAlign    = 'center';
+                                        ctx.textBaseline = 'middle';
+                                        ctx.fillStyle    = '#ffffff';
+
+                                        // Region name — small font, slightly above
+                                        ctx.font = 'bold 10px "Public Sans", Segoe UI, sans-serif';
+                                        ctx.fillText(labels3[i], x, y - 8);
+
+                                        // Count — larger font, below region name
+                                        ctx.font = 'bold 14px "Public Sans", Segoe UI, sans-serif';
+                                        ctx.fillText(counts3[i], x, y + 8);
+
+                                        ctx.restore();
+                                      });
+                                    }
+                                  };
+
                                   var myChart3 = new Chart(document.getElementById('myChart3'), {
                                     type: 'doughnut',
                                     data: {
@@ -240,7 +285,8 @@
                                           }
                                         }
                                       }
-                                    }
+                                    },
+                                    plugins: [doughnutSliceLabelPlugin]
                                   });
                                 </script>
 
