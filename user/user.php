@@ -356,8 +356,8 @@
                     </div>
                   </div>
                   <div class="card-body">
-                    <div class="container">
-                      <table id="inputTable" class="table table-striped table-bordered" style="width:1000px !important">
+                    <div class="table-responsive">
+                      <table id="inputTable" class="table table-striped table-bordered" style="width:100%">
                         <thead>
                           <tr>
                             <th>Input number</th>
@@ -385,7 +385,7 @@
                           <?php } ?>
                         </tbody>
                       </table>
-                    </div>
+                    </div><!-- /table-responsive -->
                   </div>
                 </div>
               </div>
@@ -397,8 +397,8 @@
                     <h5 class="m-0 me-2">Agricultural Officers List</h5>
                   </div>
                   <div class="card-body">
-                    <div class="container">
-                      <table id="officersTable" class="table table-striped table-bordered" style="width:1000px !important">
+                    <div class="table-responsive">
+                      <table id="officersTable" class="table table-striped table-bordered" style="width:100%">
                         <thead>
                           <tr>
                             <th>Mobile number</th>
@@ -433,7 +433,7 @@
                           <?php } ?>
                         </tbody>
                       </table>
-                    </div>
+                    </div><!-- /table-responsive -->
                   </div>
                 </div>
               </div>
@@ -469,6 +469,8 @@
       $('#inputTable').dataTable({
         info: false,
         pagingType: "simple",
+        scrollX: true,
+        autoWidth: false,
         language: {
           emptyTable: "No data available in table",
           info: "",
@@ -487,6 +489,8 @@
       $('#officersTable').dataTable({
         info: false,
         pagingType: "simple",
+        scrollX: true,
+        autoWidth: false,
         language: {
           emptyTable: "No data available in table",
           info: " ",
