@@ -164,28 +164,60 @@
                 <!-- LEFT COLUMN: Bar chart + Line chart stacked -->
                 <div class="col-12 col-lg-6 d-flex flex-column gap-4">
 
-                      <!-- Bar chart: Farmers by Region -->
+                      <!-- Bar chart: Farmers by Gender -->
                       <div class="card flex-fill">
                         <div class="card-header pb-0">
-                          <h5 class="m-0">Farmers by Region</h5>
+                          <h5 class="m-0">Farmers by Gender</h5>
                         </div>
                         <div class="card-body">
-                          <canvas id="farmersByregion"></canvas>
+                          <canvas id="farmersByGender"></canvas>
+                          <?php
+                            $genderQuery  = "SELECT gender, COUNT(*) AS total FROM farmers GROUP BY gender ORDER BY gender";
+                            $genderResult = db_query($conn, $genderQuery);
+                            $genderLabels = [];
+                            $genderCounts = [];
+                            foreach ($genderResult as $row) {
+                              $genderLabels[] = $row['gender'];
+                              $genderCounts[] = (int)$row['total'];
+                            }
+                          ?>
                           <script>
-                            const labels2 = <?php echo json_encode($region) ?>;
-                            var farmersByregion = new Chart(document.getElementById('farmersByregion'), {
+                            var farmersByGender = new Chart(document.getElementById('farmersByGender'), {
                               type: 'bar',
                               data: {
-                                labels: labels2,
+                                labels: <?php echo json_encode($genderLabels); ?>,
                                 datasets: [{
-                                  label: 'Farmers by Region',
-                                  data: <?php echo json_encode($farmers) ?>,
-                                  backgroundColor: ['#EB8921','#375E97','#EB8921','#007083'],
-                                  borderColor: ['#EB8921'],
+                                  label: 'Farmers by Gender',
+                                  data: <?php echo json_encode($genderCounts); ?>,
+                                  backgroundColor: ['#375E97', '#EB8921', '#007083'],
+                                  borderColor:     ['#375E97', '#EB8921', '#007083'],
                                   borderWidth: 1
                                 }]
                               },
-                              options: { scales: { y: { beginAtZero: true } } }
+                              options: {
+                                responsive: true,
+                                scales: {
+                                  y: {
+                                    beginAtZero: true,
+                                    ticks: { precision: 0, color: '#6c757d' },
+                                    grid: { color: 'rgba(0,0,0,0.05)' }
+                                  },
+                                  x: {
+                                    grid: { display: false },
+                                    ticks: { color: '#6c757d' }
+                                  }
+                                },
+                                plugins: {
+                                  legend: { display: false },
+                                  tooltip: {
+                                    callbacks: {
+                                      label: function(ctx) {
+                                        return ' ' + ctx.parsed.y + ' farmer(s)';
+                                      }
+                                    }
+                                  }
+                                }
+                              }
                             });
                           </script>
                         </div>
