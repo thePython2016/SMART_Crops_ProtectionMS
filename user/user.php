@@ -50,10 +50,8 @@
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
 
-        <!-- Menu -->
         <?php require 'mainMenu.php' ?>
 
-        <!-- Layout container -->
         <div class="layout-page">
 
           <!-- Navbar -->
@@ -72,7 +70,6 @@
               </ul>
             </div>
           </nav>
-          <!-- / Navbar -->
 
           <!-- Content wrapper -->
           <div class="content-wrapper">
@@ -166,7 +163,7 @@
                         <canvas id="farmersByregion"></canvas>
                         <script>
                           const labels2 = <?php echo json_encode($region) ?>;
-                          const config2 = {
+                          var farmersByregion = new Chart(document.getElementById('farmersByregion'), {
                             type: 'bar',
                             data: {
                               labels: labels2,
@@ -179,15 +176,14 @@
                               }]
                             },
                             options: { scales: { y: { beginAtZero: true } } }
-                          };
-                          var farmersByregion = new Chart(document.getElementById('farmersByregion'), config2);
+                          });
                         </script>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- Agronomists by Region — BUBBLE chart -->
+                <!-- Agronomists by Region — BUBBLE chart (one bubble per region, label+count inside) -->
                 <div class="col-12 col-md-6 col-lg-6 order-3 order-md-2">
                   <div class="row">
                     <div class="col-12 mb-4">
@@ -199,47 +195,81 @@
                                 <h5 class="text-nowrap mb-2">Agronomists by Region</h5>
                               </div>
                               <div class="mt-sm-auto">
+
                                 <div style="width:400px">
                                   <canvas id="myChart3"></canvas>
                                   <script>
-                                    const labels3  = <?php echo json_encode($address); ?>;
-                                    const counts3  = <?php echo json_encode($officerCount); ?>;
+                                    const labels3 = <?php echo json_encode($address); ?>;
+                                    const counts3 = <?php echo json_encode($officerCount); ?>;
 
                                     const bubbleColors = [
                                       '#EB8921','#375E97','#f1ba21','#9c27b0',
                                       '#007083','#e53935','#43a047','#8e24aa'
                                     ];
 
-                                    // One dataset per region — own colour, label & bubble size
-                                    const bubbleDatasets = labels3.map(function(label, i) {
-                                      var color = bubbleColors[i % bubbleColors.length];
+                                    // All regions in ONE dataset — one bubble per region
+                                    const allBubbles = labels3.map(function(label, i) {
                                       return {
-                                        label: label,
-                                        data: [{
-                                          x: i + 1,
-                                          y: counts3[i],
-                                          r: Math.max(8, counts3[i] * 5)
-                                        }],
-                                        backgroundColor: color + 'b3',
-                                        borderColor:     color,
-                                        borderWidth: 2
+                                        x: i + 1,
+                                        y: counts3[i],
+                                        r: Math.max(24, counts3[i] * 6)
                                       };
                                     });
 
+                                    // Custom plugin: draw region name + count inside each bubble
+                                    const bubbleLabelPlugin = {
+                                      id: 'bubbleLabels',
+                                      afterDatasetsDraw: function(chart) {
+                                        var ctx = chart.ctx;
+                                        chart.data.datasets.forEach(function(dataset, dsi) {
+                                          var meta = chart.getDatasetMeta(dsi);
+                                          meta.data.forEach(function(bubble, i) {
+                                            var raw = dataset.data[i];
+                                            var x   = bubble.x;
+                                            var y   = bubble.y;
+
+                                            ctx.save();
+                                            ctx.textAlign    = 'center';
+                                            ctx.textBaseline = 'middle';
+                                            ctx.fillStyle    = '#ffffff';
+
+                                            // Region name — smaller font, slightly above centre
+                                            ctx.font = 'bold 11px "Public Sans", Segoe UI, sans-serif';
+                                            ctx.fillText(labels3[i], x, y - 8);
+
+                                            // Count — larger font, below centre
+                                            ctx.font = 'bold 15px "Public Sans", Segoe UI, sans-serif';
+                                            ctx.fillText(raw.y, x, y + 9);
+
+                                            ctx.restore();
+                                          });
+                                        });
+                                      }
+                                    };
+
                                     var myChart3 = new Chart(document.getElementById('myChart3'), {
                                       type: 'bubble',
-                                      data: { datasets: bubbleDatasets },
+                                      data: {
+                                        datasets: [{
+                                          label: 'Agronomists',
+                                          data: allBubbles,
+                                          backgroundColor: labels3.map(function(_, i) {
+                                            return bubbleColors[i % bubbleColors.length] + 'cc';
+                                          }),
+                                          borderColor: labels3.map(function(_, i) {
+                                            return bubbleColors[i % bubbleColors.length];
+                                          }),
+                                          borderWidth: 2
+                                        }]
+                                      },
                                       options: {
                                         responsive: true,
                                         plugins: {
-                                          legend: {
-                                            position: 'bottom',
-                                            labels: { boxWidth: 12, font: { size: 11 } }
-                                          },
+                                          legend: { display: false },
                                           tooltip: {
                                             callbacks: {
                                               label: function(ctx) {
-                                                return ctx.dataset.label + ': ' + ctx.raw.y + ' agronomist(s)';
+                                                return labels3[ctx.dataIndex] + ': ' + ctx.raw.y + ' agronomist(s)';
                                               }
                                             }
                                           }
@@ -259,10 +289,12 @@
                                             beginAtZero: true
                                           }
                                         }
-                                      }
+                                      },
+                                      plugins: [bubbleLabelPlugin]
                                     });
                                   </script>
                                 </div>
+
                               </div>
                             </div>
                           </div>
@@ -390,12 +422,10 @@
 
           <div class="content-backdrop fade"></div>
         </div>
-        <!-- / Layout page -->
       </div>
 
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
-    <!-- / Layout wrapper -->
 
     <!-- DataTable init -->
     <script>
