@@ -164,6 +164,33 @@
                 <!-- LEFT COLUMN: Bar chart + Line chart stacked -->
                 <div class="col-12 col-lg-6 d-flex flex-column gap-4">
 
+                      <!-- Bar chart: Farmers by Region -->
+                      <div class="card flex-fill">
+                        <div class="card-header pb-0">
+                          <h5 class="m-0">Farmers by Region</h5>
+                        </div>
+                        <div class="card-body">
+                          <canvas id="farmersByregion"></canvas>
+                          <script>
+                            const labels2 = <?php echo json_encode($region) ?>;
+                            var farmersByregion = new Chart(document.getElementById('farmersByregion'), {
+                              type: 'bar',
+                              data: {
+                                labels: labels2,
+                                datasets: [{
+                                  label: 'Farmers by Region',
+                                  data: <?php echo json_encode($farmers) ?>,
+                                  backgroundColor: ['#EB8921','#375E97','#EB8921','#007083'],
+                                  borderColor: ['#EB8921'],
+                                  borderWidth: 1
+                                }]
+                              },
+                              options: { scales: { y: { beginAtZero: true } } }
+                            });
+                          </script>
+                        </div>
+                      </div>
+
                       <!-- Bar chart: Farmers by Gender -->
                       <div class="card flex-fill">
                         <div class="card-header pb-0">
@@ -215,76 +242,6 @@
                                         return ' ' + ctx.parsed.y + ' farmer(s)';
                                       }
                                     }
-                                  }
-                                }
-                              }
-                            });
-                          </script>
-                        </div>
-                      </div>
-
-                      <!-- Line chart: Farmer Registration Trend -->
-                      <div class="card flex-fill">
-                        <div class="card-header d-flex align-items-center justify-content-between pb-0">
-                          <h5 class="m-0">Farmer Registration Trend</h5>
-                          <small class="text-muted">Monthly registrations — <?php echo date('Y'); ?></small>
-                        </div>
-                        <div class="card-body">
-                          <canvas id="farmerTrendChart"></canvas>
-                          <script>
-                            <?php
-                              $trendData   = array_fill(0, 12, 0);
-                              $currentYear = date('Y');
-                              $trendQuery  = "
-                                SELECT MONTH(created_at) AS reg_month, COUNT(*) AS total
-                                FROM farmers
-                                WHERE YEAR(created_at) = '$currentYear'
-                                GROUP BY reg_month
-                                ORDER BY reg_month
-                              ";
-                              $trendResult = db_query($conn, $trendQuery);
-                              foreach ($trendResult as $row) {
-                                $trendData[(int)$row['reg_month'] - 1] = (int)$row['total'];
-                              }
-                            ?>
-                            var farmerTrendChart = new Chart(document.getElementById('farmerTrendChart'), {
-                              type: 'line',
-                              data: {
-                                labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-                                datasets: [{
-                                  label: 'Farmers Registered',
-                                  data: <?php echo json_encode($trendData); ?>,
-                                  fill: true,
-                                  backgroundColor: 'rgba(235, 137, 33, 0.12)',
-                                  borderColor: '#EB8921',
-                                  pointBackgroundColor: '#EB8921',
-                                  pointBorderColor: '#ffffff',
-                                  pointBorderWidth: 2,
-                                  pointRadius: 5,
-                                  pointHoverRadius: 7,
-                                  tension: 0.4,
-                                  borderWidth: 2
-                                }]
-                              },
-                              options: {
-                                responsive: true,
-                                interaction: { mode: 'index', intersect: false },
-                                plugins: {
-                                  legend: { display: false },
-                                  tooltip: {
-                                    callbacks: {
-                                      label: function(ctx) {
-                                        return ' ' + ctx.parsed.y + ' farmer(s) registered';
-                                      }
-                                    }
-                                  }
-                                },
-                                scales: {
-                                  x: { grid: { display: false }, ticks: { color: '#6c757d' } },
-                                  y: {
-                                    beginAtZero: true,
-                                    ticks: { precision: 0, color: '#6c757d' },
-                                    grid: { color: 'rgba(0,0,0,0.05)' }
                                   }
                                 }
                               }
