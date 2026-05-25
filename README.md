@@ -75,6 +75,6 @@ After logging in, users can:
 
 ###  Deployment
 - Frontend: Vercel
-- Backend: Cloud Hosting Server
+- Backend: Supabase
 
 
